@@ -1,0 +1,44 @@
+@model Language
+
+@{
+    ViewData["Title"] = "Dil Ekle";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">Yabancı Dil Bilgisi</h3>
+            </div>
+            <form method="post" action="/Admin/CreateLanguage">
+                @Html.AntiForgeryToken()
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Dil</label>
+                        <input type="text" name="Name" class="form-control" required placeholder="Örn: İngilizce" />
+                    </div>
+                    <div class="form-group">
+                        <label>Seviye</label>
+                        <select name="Level" class="form-control">
+                            <option value="A1">A1</option>
+                            <option value="A2">A2</option>
+                            <option value="B1">B1</option>
+                            <option value="B2">B2</option>
+                            <option value="C1">C1</option>
+                            <option value="C2">C2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sıra</label>
+                        <input type="number" name="Order" value="0" class="form-control" />
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;">Kaydet</button>
+                    <a href="/Admin/Languages" class="btn btn-default">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

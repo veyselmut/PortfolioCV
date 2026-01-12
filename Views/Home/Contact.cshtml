@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = "İletişim";
+}
+
+<div class="container-fluid p-30">
+    
+    <div style="height: 30px;"></div>
+
+    <!-- Contact Header -->
+    <div class="row mb-30">
+        <div class="col-md-12 text-center">
+            <h2 class="contact-main-title">İletişime Geçin</h2>
+            <p class="contact-subtitle">Projeleriniz için benimle iletişime geçebilirsiniz</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Contact Form -->
+        <div class="col-md-8 mb-30">
+            <div class="contact-form-wrapper">
+                
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success" style="background: rgba(25, 135, 84, 0.2); border: 1px solid #198754; color: #75b798; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+                        <i class="fas fa-check-circle"></i> @TempData["Success"]
+                    </div>
+                }
+
+                <form asp-action="Contact" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-30">
+                            <div class="form-group-modern">
+                                <input type="text" name="Name" placeholder="Adınız Soyadınız" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-30">
+                            <div class="form-group-modern">
+                                <input type="email" name="Email" placeholder="Email Adresiniz" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-30">
+                            <div class="form-group-modern">
+                                <input type="text" name="Subject" placeholder="Konu" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-30">
+                            <div class="form-group-modern">
+                                <textarea name="Message" rows="6" placeholder="Mesajınız" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn-art btn-art-large">
+                                <span>Mesaj Gönder</span>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contact Info Cards -->
+        <div class="col-md-4 mb-30">
+            <div class="contact-info-cards">
+                
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-info-content">
+                        <h6>Adres</h6>
+                        <p>Pendik / İstanbul<br>Türkiye</p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info-content">
+                        <h6>Email</h6>
+                        <p><a href="mailto:veysel.mut@hotmail.com">veysel.mut@hotmail.com</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-info-content">
+                        <h6>Telefon</h6>
+                        <p><a href="tel:+905312297405">+90 531 229 74 05</a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

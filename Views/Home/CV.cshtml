@@ -1,0 +1,336 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<PortfolioCV.SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = SharedLocalizer["Resume"];
+    var personalInfo = ViewBag.PersonalInfo as PersonalInfo;
+    var educations = ViewBag.Educations as List<Education>;
+    var experiences = ViewBag.Experiences as List<Experience>;
+    var skills = ViewBag.Skills as List<Skill>;
+    var languages = ViewBag.Languages as List<Language>;
+    var certificates = ViewBag.Certificates as List<Certificate>;
+    var projects = ViewBag.Projects as List<Project>;
+    var references = ViewBag.References as List<CvReference>;
+    var activeText = SharedLocalizer["Active"];
+}
+
+<div class="container-fluid p-30">
+    <!-- About Section -->
+    @if (!string.IsNullOrEmpty(personalInfo?.About))
+    {
+        <div class="row">
+            <div class="col-md-12 mb-30">
+                <div class="section-title">
+                    <span>@SharedLocalizer["AboutMe"]</span>
+                </div>
+                <div class="art-card p-30 animate-fade-in">
+                    <p class="mb-0 about-text">@personalInfo.About</p>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Education Column -->
+        <div class="col-md-6 mb-30">
+            <div class="section-title">
+                <span>@SharedLocalizer["Education"]</span>
+            </div>
+            <div class="timeline-container">
+                @if (educations != null && educations.Any())
+                {
+                    @foreach (var edu in educations.OrderBy(e => e.Order))
+                    {
+                        <div class="timeline-item">
+                            <div class="timeline-card hover-lift">
+                                <div class="timeline-header">
+                                    <h5 class="timeline-title">@edu.EducationType - @edu.Department</h5>
+                                    <span class="timeline-date">@edu.StartDate.Year - @(edu.IsContinuing ? activeText : edu.EndDate?.Year.ToString())</span>
+                                </div>
+                                <span class="timeline-role text-gold">@edu.School @(!string.IsNullOrEmpty(edu.Faculty) ? "( " + edu.Faculty + " )" : "")</span>
+                                @if (edu.Grade.HasValue)
+                                {
+                                    <p class="grade-badge">Not: @edu.Grade / @edu.GradeSystem</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- Experience Column -->
+        <div class="col-md-6 mb-30">
+            <div class="section-title">
+                <span>@SharedLocalizer["Experience"]</span>
+            </div>
+            <div class="timeline-container">
+                @if (experiences != null && experiences.Any())
+                {
+                    @foreach (var exp in experiences.OrderBy(e => e.Order))
+                    {
+                        <div class="timeline-item">
+                            <div class="timeline-card hover-lift">
+                                <div class="timeline-header">
+                                    <h5 class="timeline-title">@exp.Position</h5>
+                                    <span class="timeline-date">@exp.StartDate.ToString("MM/yyyy") - @(exp.IsCurrentlyWorking ? activeText : exp.EndDate?.ToString("MM/yyyy"))</span>
+                                </div>
+                                <span class="timeline-role text-gold">@exp.CompanyName (@exp.Industry)</span>
+                                <p class="exp-details"><i class="fas fa-map-marker-alt mr-1"></i> @exp.Department | @exp.Address</p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Skills Section -->
+    <div class="row">
+        <div class="col-md-6 mb-30">
+            <div class="section-title">
+                <span>@SharedLocalizer["Skills"]</span>
+            </div>
+            <div class="timeline-container">
+                @if (skills != null && skills.Any()) {
+                @foreach (var skill in skills.OrderBy(s => s.Order))
+                {
+                    <div class="timeline-item">
+                        <div class="timeline-card hover-lift">                        
+                                <div class="timeline-header">
+                                    <h5 class="timeline-title">@skill.Name</h5>
+                                    <span class="timeline-date">@skill.Level</span>
+                                </div>
+                        
+                        <div class="timeline-role text-gold skill-progress-bar">
+                            <div class="skill-progress-fill" style="width: @skill.Level%"></div>
+                        </div>
+                        </div>
+                    </div>
+                }
+                }
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-30">
+             <div class="section-title">
+                <span>@SharedLocalizer["Certificates"]</span>
+            </div>
+            <div class="timeline-container">
+                    @if (certificates != null) {
+                    @foreach (var cert in certificates.OrderBy(c => c.Order))
+                    {
+                        <div class="timeline-item"> 
+                            <div class="timeline-card hover-lift">
+                                <div class="timeline-header">
+                                    <h5 class="timeline-title">@cert.Name</h5>
+                                    <span class="timeline-date">@cert.Date.ToString("MM/yyyy")</span>
+                                </div>
+                                <span class="timeline-role text-gold">@cert.Issuer</span>
+                            </div>
+                        </div>
+                    }
+                    }
+            </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="col-md-6 mb-30">
+            <div class="section-title">
+                <span>@SharedLocalizer["Projects"]</span>
+            </div>
+            <div class="timeline-container">
+                    @if (projects != null) {
+                    @foreach (var proj in projects.OrderBy(p => p.Order))
+                    {
+                        <div class="timeline-item"> 
+                            <div class="timeline-card hover-lift">
+                                <div class="timeline-header">
+                                    <h5 class="timeline-title">@proj.Name</h5>
+                                    <span class="timeline-date">@proj.Date.ToString("MM/yyyy")</span>
+                                </div>
+                                
+                                @if(!string.IsNullOrEmpty(proj.Description))
+                                {
+                                    <p class="project-description">@proj.Description</p>
+                                }
+                                
+                                @if(!string.IsNullOrEmpty(proj.Tasks))
+                                {
+                                    <div class="project-tasks">
+                                        <strong class="text-gold">@SharedLocalizer["ProjectTasks"]:</strong>
+                                        <ul class="tasks-list">
+                                            @foreach(var task in proj.Tasks.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                                            {
+                                                <li>@task.Trim()</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                                
+                                @if(!string.IsNullOrEmpty(proj.Url)) { <a href="@proj.Url" target="_blank" class="project-link"><i class="fas fa-external-link-alt mr-1"></i> @SharedLocalizer["ViewProject"]</a> }
+                            </div>
+                        </div>
+                    }
+                    }
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- References -->
+        <div class="col-md-12 mb-30">
+            <div class="section-title">
+                <span>@SharedLocalizer["References"]</span>
+            </div>
+            <div class="timeline-container">
+                @if (references != null) {
+                @foreach(var r in references.OrderBy(r => r.Order))
+                {
+                    <div class="timeline-item"> 
+                        <div class="timeline-card hover-lift">
+                            <div class="timeline-header">
+                                <h5 class="timeline-title">@r.Name</h5>
+                                <span class="timeline-date">@r.Position</span>
+                            </div>
+                            <span class="timeline-role text-gold">@r.Company</span>
+                        </div>
+                    </div>
+                }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .about-text { color: var(--text-muted); line-height: 1.8; font-size: 14px; }
+    .grade-badge { background: rgba(255,193,7,0.1); color: var(--primary); display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-top: 10px; border: 1px solid rgba(255,193,7,0.2); }
+    .exp-details { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+    
+    .hover-lift { transition: transform 0.3s ease; }
+    .hover-lift:hover { transform: translateY(-5px); }
+    
+    /* Skills Grid */
+    .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .skill-item { margin-bottom: 10px; }
+    .skill-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: 500; }
+    .skill-progress-bg { height: 4px; background: var(--bg-secondary); border-radius: 2px; }
+    .skill-progress-fill { height: 100%; background: var(--primary); border-radius: 2px; box-shadow: 0 0 10px rgba(255,193,7,0.3); }
+
+    /* Languages CV */
+    .languages-list-cv { display: flex; flex-direction: column; gap: 15px; }
+    .lang-item-cv { display: flex; align-items: center; gap: 12px; }
+    .lang-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 8px var(--primary); }
+    .lang-info-cv strong { display: block; font-size: 13px; color: var(--text-main); }
+    .lang-info-cv span { font-size: 11px; color: var(--text-muted); }
+    .border-left-custom { border-left: 1px solid var(--border-color); padding-left: 30px; }
+
+    /* Info List */
+    .info-list-custom { list-style: none; padding: 0; margin: 0; }
+    .info-list-custom li { padding: 15px 0; border-bottom: 1px solid var(--border-color); transition: 0.3s; }
+    .info-list-custom li:last-child { border-bottom: none; }
+    .hover-glow:hover { background: rgba(255,255,255,0.02); padding-left: 10px; }
+    .badge-gold { background: var(--primary); color: #1e1e28; font-size: 10px; font-weight: 700; }
+    .badge-dark-gold { background: var(--bg-secondary); color: var(--primary); border: 1px solid var(--primary); font-size: 10px; }
+    .project-link { font-size: 11px; color: var(--primary); text-decoration: none; font-weight: 500; }
+    .project-link:hover { text-decoration: underline; }
+    
+    /* Project Details */
+    .project-description { 
+        font-size: 12px; 
+        color: var(--text-muted); 
+        margin: 10px 0; 
+        line-height: 1.6; 
+    }
+    .project-tasks { 
+        margin-top: 12px; 
+    }
+    .project-tasks strong { 
+        font-size: 11px; 
+        display: block; 
+        margin-bottom: 8px; 
+    }
+    .tasks-list { 
+        list-style: none; 
+        padding: 0; 
+        margin: 0; 
+    }
+    .tasks-list li { 
+        font-size: 11px; 
+        color: var(--text-muted); 
+        padding: 4px 0 4px 20px; 
+        position: relative; 
+    }
+    .tasks-list li:before { 
+        content: "▸"; 
+        color: var(--primary); 
+        position: absolute; 
+        left: 0; 
+        font-size: 12px; 
+    }
+
+    /* Modern Skills Progress Bars */
+    .skill-item-modern { margin-bottom: 25px; }
+    .skill-item-modern:last-child { margin-bottom: 0; }
+    .skill-header-modern { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        margin-bottom: 10px; 
+    }
+    .skill-name { 
+        font-size: 13px; 
+        font-weight: 500; 
+        color: var(--text-main); 
+    }
+    .skill-percentage { 
+        font-size: 12px; 
+        font-weight: 600; 
+        color: var(--primary); 
+    }
+    .skill-progress-bar { 
+        height: 6px; 
+        background: var(--bg-secondary); 
+        border-radius: 10px; 
+        overflow: hidden;
+        position: relative;
+    }
+    .skill-progress-fill { 
+        height: 100%; 
+        background: linear-gradient(90deg, var(--primary) 0%, #ffdb4d 100%);
+        border-radius: 10px; 
+        transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+        position: relative;
+    }
+    .skill-progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+    @@keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    /* Reference Card */
+    .reference-card { position: relative; overflow: hidden; }
+    .ref-icon-bg { position: absolute; top: -10px; right: 10px; font-size: 60px; color: rgba(255,255,255,0.03); transform: rotate(15deg); }
+    .ref-contact { display: flex; flex-direction: column; gap: 5px; margin-top: 10px; }
+    .ref-contact span { font-size: 11px; color: var(--text-muted); }
+    .ref-contact i { color: var(--primary); width: 15px; text-align: center; margin-right: 5px; }
+
+    .animate-fade-in { animation: fadeIn 0.8s ease forwards; }
+    @@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @@media (max-width: 768px) {
+        .skills-grid { grid-template-columns: 1fr; }
+        .border-left-custom { border-left: none; border-top: 1px solid var(--border-color); padding-left: 0; padding-top: 30px; margin-top: 20px; }
+    }
+</style>

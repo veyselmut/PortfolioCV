@@ -1,0 +1,45 @@
+@model Language
+
+@{
+    ViewData["Title"] = "Dil Düzenle";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">Yabancı Dil Düzenle</h3>
+            </div>
+            <form method="post" action="/Admin/EditLanguage">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Dil</label>
+                        <input type="text" name="Name" value="@Model.Name" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Seviye</label>
+                        <select name="Level" class="form-control">
+                            <option value="A1" selected="@(Model.Level == "A1")">A1</option>
+                            <option value="A2" selected="@(Model.Level == "A2")">A2</option>
+                            <option value="B1" selected="@(Model.Level == "B1")">B1</option>
+                            <option value="B2" selected="@(Model.Level == "B2")">B2</option>
+                            <option value="C1" selected="@(Model.Level == "C1")">C1</option>
+                            <option value="C2" selected="@(Model.Level == "C2")">C2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sıra</label>
+                        <input type="number" name="Order" value="@Model.Order" class="form-control" />
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;">Güncelle</button>
+                    <a href="/Admin/Languages" class="btn btn-default">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,211 @@
+@using PortfolioCV.Models
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IHtmlLocalizer<PortfolioCV.SharedResource> SharedLocalizer
+
+<!DOCTYPE html>
+<html lang="@(Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name ?? "tr")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Veysel Mut</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/circular-progress.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+        (function() {
+            var theme = localStorage.getItem('frontendTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- Mobile Top Bar -->
+    <div class="mobile-top-bar">
+        <a href="/" class="text-gold" style="font-weight: 700;">VM</a>
+        <i class="fas fa-bars" onclick="toggleSidebar()" style="color: #fff; cursor: pointer;"></i>
+    </div>
+
+    <div class="app-container">
+        
+        <!-- Sidebar (Profile Card) -->
+        @await Component.InvokeAsync("Sidebar")
+
+        <!-- Main Content -->
+        <div class="content-area">
+            
+            <!-- Top Menu (Desktop) -->
+            <div class="top-menu-bar">
+                <nav>
+                    <ul>
+                        <li><a href="/">@SharedLocalizer["Home"]</a></li>
+                        <li><a href="/Home/CV">@SharedLocalizer["Resume"]</a></li>
+                        <li><a href="/Home/Contact">@SharedLocalizer["Contact"]</a></li>
+                        <li><a href="/Admin/Login" style="color: #444;">@SharedLocalizer["AdminPanel"]</a></li>
+                        <li style="margin-left: 10px; border-left: 1px solid #eee; padding-left: 10px;">
+                            @{
+                                var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+                                var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "tr-TR";
+                            }
+                            <form id="langFormTr" action="/Language/SetLanguage" method="post" style="display:none;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="culture" value="tr-TR" />
+                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                            </form>
+                            <form id="langFormEn" action="/Language/SetLanguage" method="post" style="display:none;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="culture" value="en-US" />
+                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                            </form>
+                            
+                            <!-- Actions Switcher Container -->
+                            <div class="actions-wrapper" style="display: flex; align-items: center; gap: 10px; margin-left: 20px;">
+                                
+                                <!-- Language Switcher -->
+                                <div class="lang-wrapper" style="position: relative;">
+                                    <button type="button" class="lang-toggle" style="background:none; border:none; display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-main); padding:8px 12px; transition:0.3s; border-radius:8px; border: 1px solid var(--border-color);">
+                                        <img src="https://flagcdn.com/w80/@(currentCulture == "tr-TR" ? "tr" : "us").png" style="width:28px; height:21px; border-radius:4px; object-fit:cover; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+                                        <span style="font-size:14px; font-weight:600; color: var(--text-main);">@(currentCulture == "tr-TR" ? "TR" : "EN")</span>
+                                        <i class="fas fa-chevron-down" style="font-size:10px; color: var(--text-muted);"></i>
+                                    </button>
+                                    
+                                    <div class="lang-dropdown-menu" style="position:absolute; top:120%; right:0; background:var(--bg-panel); box-shadow:0 8px 20px rgba(0,0,0,0.25); border-radius:10px; padding:8px; min-width:160px; display:none; z-index:999; border:1px solid var(--border-color);">
+                                        <div onclick="document.getElementById('langFormTr').submit()" style="display:flex; align-items:center; gap:12px; padding:12px; cursor:pointer; border-radius:8px; transition:0.2s; font-size:14px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
+                                            <img src="https://flagcdn.com/w80/tr.png" style="width:28px; height:21px; border-radius:4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);"> <span style="font-weight: 500;">Türkçe</span>
+                                        </div>
+                                        <div onclick="document.getElementById('langFormEn').submit()" style="display:flex; align-items:center; gap:12px; padding:12px; cursor:pointer; border-radius:8px; transition:0.2s; font-size:14px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
+                                            <img src="https://flagcdn.com/w80/us.png" style="width:28px; height:21px; border-radius:4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);"> <span style="font-weight: 500;">English</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Theme Switcher -->
+                                <div class="theme-wrapper" style="position: relative;">
+                                    <button type="button" class="theme-toggle" style="background:none; border:none; display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-main); padding:6px; transition:0.3s; border-radius:6px;">
+                                        <div style="width:22px; height:22px; display:flex; align-items:center; justify-content:center;">
+                                            <i class="fas" id="currentThemeIcon" style="font-size:16px;"></i>
+                                        </div>
+                                        <span style="font-size:13px; font-weight:600; color: var(--text-muted);">Theme</span>
+                                        <i class="fas fa-chevron-down" style="font-size:10px; color: var(--text-muted);"></i>
+                                    </button>
+                                    
+                                    <div class="theme-dropdown-menu" style="position:absolute; top:120%; right:0; background:var(--bg-panel); box-shadow:0 5px 15px rgba(0,0,0,0.3); border-radius:8px; padding:6px; min-width:140px; display:none; z-index:999; border:1px solid var(--border-color);">
+                                        <div onclick="setAppTheme('light')" style="display:flex; align-items:center; gap:10px; padding:10px; cursor:pointer; border-radius:6px; transition:0.2s; font-size:13px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
+                                            <i class="fas fa-sun" style="width:16px; color:#ffc107;"></i> Light
+                                        </div>
+                                        <div onclick="setAppTheme('dark')" style="display:flex; align-items:center; gap:10px; padding:10px; cursor:pointer; border-radius:6px; transition:0.2s; font-size:13px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
+                                             <i class="fas fa-moon" style="width:16px; color:#9090aa;"></i> Dark
+                                        </div>
+                                        <div onclick="setAppTheme('system')" style="display:flex; align-items:center; gap:10px; padding:10px; cursor:pointer; border-radius:6px; transition:0.2s; font-size:13px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
+                                             <i class="fas fa-desktop" style="width:16px; color:var(--text-muted);"></i> System
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                (function() {
+                                    // Shared Logic
+                                    function closeAllMenus() {
+                                        if(document.querySelector('.lang-dropdown-menu')) document.querySelector('.lang-dropdown-menu').style.display = 'none';
+                                        if(document.querySelector('.theme-dropdown-menu')) document.querySelector('.theme-dropdown-menu').style.display = 'none';
+                                    }
+                                    document.addEventListener('click', closeAllMenus);
+
+                                    // Language Dropdown
+                                    const langToggle = document.querySelector('.lang-toggle');
+                                    const langMenu = document.querySelector('.lang-dropdown-menu');
+                                    if(langToggle && langMenu) {
+                                        langToggle.addEventListener('click', function(e) {
+                                            e.stopPropagation();
+                                            const isVisible = langMenu.style.display === 'block';
+                                            closeAllMenus();
+                                            if(!isVisible) langMenu.style.display = 'block';
+                                        });
+                                    }
+
+                                    // Theme Logic (System/Light/Dark)
+                                    const themeToggle = document.querySelector('.theme-toggle');
+                                    const themeMenu = document.querySelector('.theme-dropdown-menu');
+                                    const currentIcon = document.getElementById('currentThemeIcon');
+
+                                    function getEffectiveTheme(theme) {
+                                        if (theme === 'system') {
+                                            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                                        }
+                                        return theme;
+                                    }
+
+                                    function updateThemeUI() {
+                                        const storedTheme = localStorage.getItem('appTheme') || 'system';
+                                        const effective = getEffectiveTheme(storedTheme);
+                                        
+                                        // Update Icon based on STORED theme (to show what is selected)
+                                        if(storedTheme === 'light') { currentIcon.className = 'fas fa-sun'; currentIcon.style.color = '#ffc107'; }
+                                        else if(storedTheme === 'dark') { currentIcon.className = 'fas fa-moon'; currentIcon.style.color = '#9090aa'; }
+                                        else { currentIcon.className = 'fas fa-desktop'; currentIcon.style.color = 'var(--text-muted)'; }
+
+                                        // Apply Theme
+                                        document.documentElement.setAttribute('data-theme', effective);
+                                    }
+
+                                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeUI);
+                                    
+                                    // Initial Load
+                                    updateThemeUI();
+
+                                    window.setAppTheme = function(theme) {
+                                        localStorage.setItem('appTheme', theme);
+                                        updateThemeUI();
+                                    };
+
+                                    if(themeToggle && themeMenu) {
+                                        themeToggle.addEventListener('click', function(e) {
+                                            e.stopPropagation();
+                                            const isVisible = themeMenu.style.display === 'block';
+                                            closeAllMenus();
+                                            if(!isVisible) themeMenu.style.display = 'block';
+                                        });
+                                    }
+                                })();
+                            </script>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            @RenderBody()
+            
+            <footer>
+                <div class="container-fluid" style="text-align: center; color: #666; font-size: 11px; padding-top: 20px;">
+                    &copy; 2026 Veysel Mut. All Rights Reserved.
+                </div>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // Circular Progress Bar Animation
+        document.addEventListener("DOMContentLoaded", function () {
+            const progressBars = document.querySelectorAll('.circular-bar');
+            
+            // Wait slightly for layout to settle
+            setTimeout(() => {
+                progressBars.forEach(bar => {
+                    const offset = bar.getAttribute('data-offset');
+                    bar.style.strokeDashoffset = offset;
+                });
+            }, 100);
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

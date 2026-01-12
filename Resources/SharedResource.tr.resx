@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- General -->
+  <data name="Home" xml:space="preserve"><value>Ana Sayfa</value></data>
+  <data name="Resume" xml:space="preserve"><value>Özgeçmiş</value></data>
+  <data name="Contact" xml:space="preserve"><value>İletişim</value></data>
+  <data name="AdminPanel" xml:space="preserve"><value>Yönetim Paneli</value></data>
+  <data name="Language" xml:space="preserve"><value>Dil</value></data>
+  <data name="Logout" xml:space="preserve"><value>Çıkış Yap</value></data>
+  <data name="ViewPortfolio" xml:space="preserve"><value>Siteyi Görüntüle</value></data>
+  
+  <!-- CV Page -->
+  <data name="AboutMe" xml:space="preserve"><value>Hakkımda</value></data>
+  <data name="Education" xml:space="preserve"><value>Eğitim</value></data>
+  <data name="Experience" xml:space="preserve"><value>Deneyim</value></data>
+  <data name="Projects" xml:space="preserve"><value>Projeler</value></data>
+  <data name="Skills" xml:space="preserve"><value>Yetenekler</value></data>
+  <data name="Certificates" xml:space="preserve"><value>Sertifikalar</value></data>
+  <data name="References" xml:space="preserve"><value>Referanslar</value></data>
+  <data name="DownloadCV" xml:space="preserve"><value>CV İndir</value></data>
+  <data name="MyServices" xml:space="preserve"><value>Hizmetlerim</value></data>
+  <data name="ViewProject" xml:space="preserve"><value>Projeyi Görüntüle</value></data>
+  <data name="ProjectTasks" xml:space="preserve"><value>Görevler</value></data>
+  
+  <!-- Sidebar -->
+  <data name="Address" xml:space="preserve"><value>Adres</value></data>
+  <data name="Phone" xml:space="preserve"><value>Telefon</value></data>
+  <data name="Email" xml:space="preserve"><value>E-posta</value></data>
+  <data name="Languages" xml:space="preserve"><value>Diller</value></data>
+  
+  <!-- Admin Menu -->
+  <data name="Dashboard" xml:space="preserve"><value>Panel</value></data>
+  <data name="ContentManagement" xml:space="preserve"><value>İÇERİK YÖNETİMİ</value></data>
+  <data name="WelcomeMessage" xml:space="preserve"><value>Karşılama Mesajı</value></data>
+  <data name="PersonalInfo" xml:space="preserve"><value>Kişisel Bilgiler</value></data>
+  <data name="JobExperience" xml:space="preserve"><value>İş Deneyimi</value></data>
+  <data name="SocialLinks" xml:space="preserve"><value>Sosyal Bağlantılar</value></data>
+  <data name="Communication" xml:space="preserve"><value>İLETİŞİM</value></data>
+  <data name="Messages" xml:space="preserve"><value>Mesajlar</value></data>
+  
+  <!-- Admin Actions -->
+  <data name="AddNew" xml:space="preserve"><value>Yeni Ekle</value></data>
+  <data name="Edit" xml:space="preserve"><value>Düzenle</value></data>
+  <data name="Delete" xml:space="preserve"><value>Sil</value></data>
+  <data name="Save" xml:space="preserve"><value>Kaydet</value></data>
+  <data name="Cancel" xml:space="preserve"><value>İptal</value></data>
+  <data name="Update" xml:space="preserve"><value>Güncelle</value></data>
+  <data name="Operations" xml:space="preserve"><value>İşlemler</value></data>
+  <data name="Order" xml:space="preserve"><value>Sıra</value></data>
+  
+  <!-- Form Labels -->
+  <data name="Name" xml:space="preserve"><value>Ad / İsim</value></data>
+  <data name="Title" xml:space="preserve"><value>Başlık / Ünvan</value></data>
+  <data name="Subtitle" xml:space="preserve"><value>Alt Başlık</value></data>
+  <data name="Description" xml:space="preserve"><value>Açıklama</value></data>
+  <data name="Date" xml:space="preserve"><value>Tarih</value></data>
+  <data name="StartDate" xml:space="preserve"><value>Başlangıç Tarihi</value></data>
+  <data name="EndDate" xml:space="preserve"><value>Bitiş Tarihi</value></data>
+  <data name="Level" xml:space="preserve"><value>Seviye</value></data>
+  <data name="School" xml:space="preserve"><value>Okul / Kurum</value></data>
+  <data name="Company" xml:space="preserve"><value>Şirket</value></data>
+  <data name="Position" xml:space="preserve"><value>Pozisyon</value></data>
+  <data name="Grade" xml:space="preserve"><value>Not Ortalaması</value></data>
+  <data name="City" xml:space="preserve"><value>Şehir</value></data>
+  <data name="Active" xml:space="preserve"><value>Aktif (Devam Ediyor)</value></data>
+  <data name="Image" xml:space="preserve"><value>Resim</value></data>
+  
+  <!-- Home Page -->
+  <data name="DiscoverPortfolio" xml:space="preserve"><value>Portföyümü Keşfedin</value></data>
+  <data name="Services" xml:space="preserve"><value>Hizmetler</value></data>
+  <data name="WebDevelopment" xml:space="preserve"><value>Web Geliştirme</value></data>
+  <data name="WebDevDesc" xml:space="preserve"><value>Modern ve responsive web siteleri.</value></data>
+  <data name="BackendSystems" xml:space="preserve"><value>Backend Sistemler</value></data>
+  <data name="BackendDesc" xml:space="preserve"><value>ASP.NET Core ile güçlü API'lar.</value></data>
+  <data name="Database" xml:space="preserve"><value>Veritabanı</value></data>
+  <data name="DatabaseDesc" xml:space="preserve"><value>MSSQL ve SQLite optimizasyonu.</value></data>
+  <data name="Roles" xml:space="preserve"><value>Yazılım Geliştirici,Mekatronik Mühendisi,Freelancer</value></data>
+</root>

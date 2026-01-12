@@ -1,0 +1,598 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization
+@inject IHtmlLocalizer<PortfolioCV.SharedResource> SharedLocalizer
+
+<!DOCTYPE html>
+<html lang="@(Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name ?? "tr")">
+@{
+    var themeCookie = Context.Request.Cookies["appTheme"] ?? "system";
+    var isDark = themeCookie == "dark"; // Simple check, system preference handling on server is complex, client JS will fix if mismatch
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Admin Panel</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <script>
+        (function() {
+            var stored = localStorage.getItem('appTheme') || 'system';
+            var theme = stored;
+            if (theme === 'system') {
+                theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
+            
+            var css = '* { transition: none !important; }';
+            if (theme === 'light') {
+                css += `
+                    body { background-color: #f4f6f9 !important; color: #1e1e2d !important; } 
+                    .main-sidebar { background-color: #ffffff !important; } 
+                    /* Brand Link (Logo) */
+                    .brand-link { background-color: #ffffff !important; color: #1e1e2d !important; border-bottom: 1px solid #dee2e6 !important; display: flex !important; align-items: center !important; }
+                    .brand-link .brand-text { color: #1e1e2d !important; }
+                    .user-panel { border-bottom: 1px solid #dee2e6 !important; }
+                    .user-panel .info a { color: #1e1e2d !important; }
+                    /* Nav Items */
+                    .nav-sidebar .nav-item > .nav-link { color: #1e1e2d !important; }
+                    .nav-sidebar .nav-item > .nav-link p { color: #1e1e2d !important; }
+                    .nav-sidebar .nav-header { color: #7f7f7f !important; }
+                    .main-sidebar .nav-link.active { background-color: #007bff !important; color: #fff !important; }
+                    .main-sidebar .nav-link.active p { color: #fff !important; }
+                    /* Header & Content */
+                    .main-header { background-color: #ffffff !important; color: #1e1e2d !important; border-bottom: 1px solid #dee2e6 !important; }
+                    .main-header .nav-link { color: #1e1e2d !important; }
+                    .content-wrapper { background-color: #f4f6f9 !important; }
+                    .content-header { color: #1e1e2d !important; }
+                    /* Cards & Tables */
+                    .card { background-color: #ffffff !important; color: #1e1e2d !important; }
+                    .card-header { background-color: #ffffff !important; border-bottom: 1px solid #dee2e6 !important; color: #1e1e2d !important; }
+                    .card-footer { background-color: #f7f7f7 !important; color: #1e1e2d !important; border-top: 1px solid #dee2e6 !important; }
+                    .card-title { color: #1e1e2d !important; }
+                    .table { color: #1e1e2d !important; background-color: #ffffff !important; }
+                    .table thead th { border-bottom: 2px solid #dee2e6 !important; color: #1e1e2d !important; }
+                    .table td, .table th { border-top: 1px solid #dee2e6 !important; }
+                    /* Dropdowns */
+                    .dropdown-menu { background-color: #ffffff !important; color: #1e1e2d !important; border: 1px solid #dee2e6 !important; }
+                    .dropdown-item { color: #1e1e2d !important; }
+                    .dropdown-item:hover { background-color: #f8f9fa !important; }
+                    /* Footer & Forms */
+                    .main-footer { background-color: #ffffff !important; color: #1e1e2d !important; border-top: 1px solid #dee2e6 !important; }
+                    .form-control, .custom-select, textarea, input { background-color: #ffffff !important; color: #1e1e2d !important; border: 1px solid #ced4da !important; }
+                    .input-group-text { background-color: #e9ecef !important; color: #495057 !important; border: 1px solid #ced4da !important; }
+                    .btn-default { background-color: #f8f9fa !important; color: #444 !important; border-color: #ddd !important; }
+                    /* Custom File Input & Progress */
+                    .custom-file-label { background-color: #ffffff !important; color: #495057 !important; border: 1px solid #ced4da !important; }
+                    .custom-file-label::after { background-color: #e9ecef !important; color: #495057 !important; border-left: 1px solid #ced4da !important; }
+                    .progress { background-color: #e9ecef !important; }
+                    /* Dashboard Widgets */
+                    .info-box { background-color: #ffffff !important; color: #1e1e2d !important; }
+                    .small-box-footer { background-color: rgba(0,0,0,0.1) !important; color: #1e1e2d !important; }
+                    .btn-app { background-color: #f8f9fa !important; color: #444 !important; border: 1px solid #ddd !important; }
+                `;
+            } else {
+                css += `
+                    body { background-color: #454d55 !important; color: #fff !important; } 
+                    .main-sidebar { background-color: #343a40 !important; } 
+                    /* Brand Link */
+                    .brand-link { background-color: #343a40 !important; color: #fff !important; border-bottom: 1px solid #4b545c !important; display: flex !important; align-items: center !important; }
+                    .brand-link .brand-text { color: #fff !important; }
+                    .user-panel { border-bottom: 1px solid #4b545c !important; }
+                    .user-panel .info a { color: #c2c7d0 !important; }
+                    /* Nav Items */
+                    .nav-sidebar .nav-item > .nav-link { color: #c2c7d0 !important; }
+                    .nav-sidebar .nav-item > .nav-link p { color: #c2c7d0 !important; }
+                    .nav-sidebar .nav-header { color: #c2c7d0 !important; }
+                    .main-sidebar .nav-link.active { background-color: #007bff !important; color: #fff !important; }
+                    .main-sidebar .nav-link.active p { color: #fff !important; }
+                    /* Header & Content */
+                    .main-header { background-color: #343a40 !important; color: #fff !important; border-bottom: 1px solid #4b545c !important; }
+                    .main-header .nav-link { color: #fff !important; }
+                    .content-wrapper { background-color: #454d55 !important; }
+                    .content-header { color: #fff !important; }
+                    /* Cards & Tables */
+                    .card { background-color: #343a40 !important; color: #fff !important; }
+                    .card-header { background-color: #343a40 !important; border-bottom: 1px solid #4b545c !important; color: #fff !important; }
+                    .card-footer { background-color: #343a40 !important; border-top: 1px solid #4b545c !important; color: #fff !important; }
+                    .card-title { color: #fff !important; }
+                    .table { color: #fff !important; background-color: #343a40 !important; }
+                    .table thead th { border-bottom: 2px solid #4b545c !important; color: #fff !important; }
+                    .table td, .table th { border-top: 1px solid #4b545c !important; }
+                    /* Dropdowns */
+                    .dropdown-menu { background-color: #343a40 !important; color: #fff !important; border: 1px solid #4b545c !important; }
+                    .dropdown-item { color: #fff !important; }
+                    .dropdown-item:hover { background-color: #3f474e !important; }
+                    /* Footer & Forms */
+                    .main-footer { background-color: #343a40 !important; color: #fff !important; border-top: 1px solid #4b545c !important; }
+                    .form-control, .custom-select, textarea, input { background-color: #343a40 !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                    .form-control:focus, .custom-select:focus, textarea:focus, input:focus { background-color: #3f474e !important; color: #fff !important; }
+                    .input-group-text { background-color: #3f474e !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                    .btn-default { background-color: #3f474e !important; color: #fff !important; border-color: #6c757d !important; }
+                    .btn { color: #fff !important; }
+                    .btn-primary { background-color: #007bff !important; border-color: #007bff !important; }
+                    .btn-danger { background-color: #dc3545 !important; border-color: #dc3545 !important; }
+                    .btn-success { background-color: #28a745 !important; border-color: #28a745 !important; }
+                    .btn-warning { background-color: #ffc107 !important; border-color: #ffc107 !important; color: #1f2d3d !important; }
+                    /* Custom File Input & Progress */
+                    .custom-file-label { background-color: #343a40 !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                    .custom-file-label::after { background-color: #3f474e !important; color: #fff !important; border-left: 1px solid #6c757d !important; }
+                    .progress { background-color: #3f474e !important; }
+                    /* Dashboard Widgets */
+                    .info-box { background-color: #343a40 !important; color: #fff !important; }
+                    .info-box-content { color: #fff !important; }
+                    .small-box { color: #fff !important; }
+                    .small-box-footer { background-color: rgba(0,0,0,0.2) !important; color: #fff !important; }
+                    .btn-app { background-color: #3f474e !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                `;
+            }
+            var style = document.createElement('style');
+            style.id = 'theme-css';
+            style.type = 'text/css';
+            style.appendChild(document.createTextNode(css));
+            document.head.appendChild(style);
+        })();
+    </script>
+    <style>
+        :root {
+           --bg-panel: #ffffff;
+           --text-main: #333;
+           --text-muted: #666;
+           --border-color: #ddd;
+           --bg-dark: #f4f6f9;
+        }
+        [data-theme="dark"] {
+           --bg-panel: #343a40;
+           --text-main: #fff;
+           --text-muted: #adb5bd;
+           --border-color: #4b545c;
+           --bg-dark: #454d55;
+        }
+        /* Modern Range Slider Styling */
+        .custom-range {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #dc3545 0%, #dc3545 50%, #e9ecef 50%, #e9ecef 100%);
+            outline: none;
+            transition: background 0.3s ease;
+        }
+        
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #dc3545;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .custom-range::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.6);
+        }
+        
+        .custom-range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #dc3545;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .custom-range::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.6);
+        }
+        
+        .custom-range::-moz-range-track {
+            height: 8px;
+            border-radius: 5px;
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed @(isDark ? "dark-mode" : "")">
+    <script>
+        (function(){
+            var t = localStorage.getItem('appTheme') || 'system';
+            if(t === 'system') {
+                if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark';
+                else t = 'light';
+            }
+            if(t === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand @(isDark ? "navbar-dark" : "navbar-white navbar-light")">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/" class="nav-link" target="_blank">@SharedLocalizer["ViewProject"]</a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Language Switcher -->
+                <li class="nav-item dropdown">
+                    @{
+                        var requestCulture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>();
+                        var currentCulture = requestCulture?.RequestCulture.UICulture.Name ?? "tr-TR";
+                        var currentFlagCode = currentCulture.StartsWith("tr") ? "tr" : "us";
+                        var currentLangText = currentCulture.StartsWith("tr") ? "TR" : "EN";
+                    }
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false" style="display: flex; align-items: center; gap: 8px;">
+                        <img src="https://flagcdn.com/w40/@(currentFlagCode).png" alt="@currentLangText" style="width: 20px; height: 15px; border-radius: 3px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                        <span class="d-none d-md-inline">@currentLangText</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow-sm" style="min-width: 180px;">
+                        <form id="adminLangTr" action="/Language/SetLanguage" method="post" style="display:none;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="culture" value="tr-TR" />
+                            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                        </form>
+                        <a href="javascript:document.getElementById('adminLangTr').submit()" class="dropdown-item @(currentCulture.StartsWith("tr") ? "active" : "")" style="display: flex; align-items: center; gap: 10px;">
+                            <img src="https://flagcdn.com/w40/tr.png" alt="TR" style="width: 24px; height: 18px; border-radius: 3px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                            <span>Türkçe</span>
+                        </a>
+                        <form id="adminLangEn" action="/Language/SetLanguage" method="post" style="display:none;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="culture" value="en-US" />
+                            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                        </form>
+                        <a href="javascript:document.getElementById('adminLangEn').submit()" class="dropdown-item @(currentCulture.StartsWith("en") ? "active" : "")" style="display: flex; align-items: center; gap: 10px;">
+                            <img src="https://flagcdn.com/w40/us.png" alt="EN" style="width: 24px; height: 18px; border-radius: 3px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">
+                            <span>English</span>
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Theme Switcher -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                        <i class="fas fa-palette" id="adminThemeIcon"></i>
+                        <span class="d-none d-md-inline ml-1" id="adminThemeText">Theme</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow-sm" style="min-width: 160px;">
+                        <a href="javascript:setAppTheme('light')" class="dropdown-item">
+                            <i class="fas fa-sun mr-2 text-warning"></i> Light
+                        </a>
+                        <a href="javascript:setAppTheme('dark')" class="dropdown-item">
+                            <i class="fas fa-moon mr-2 text-info"></i> Dark
+                        </a>
+                        <a href="javascript:setAppTheme('system')" class="dropdown-item">
+                            <i class="fas fa-desktop mr-2 text-secondary"></i> System
+                        </a>
+                    </div>
+                </li>      <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Theme Logic
+                            const themeIcon = document.getElementById('adminThemeIcon');
+
+                            function getEffectiveTheme(theme) {
+                                if (theme === 'system') {
+                                    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                                }
+                                return theme;
+                            }
+
+                            // Helper to get CSS
+                            function getThemeCss(theme) {
+                                let common = '* { transition: none !important; }'; // Disable transitions on load
+                                if (theme === 'light') {
+                                    return common + `
+                                        body { background-color: #f4f6f9 !important; color: #1e1e2d !important; } 
+                                        .main-sidebar { background-color: #ffffff !important; } 
+                                        /* Brand Link (Logo) */
+                                        .brand-link { background-color: #ffffff !important; color: #1e1e2d !important; border-bottom: 1px solid #dee2e6 !important; display: flex !important; align-items: center !important; }
+                                        .brand-link .brand-text { color: #1e1e2d !important; }
+                                        .user-panel { border-bottom: 1px solid #dee2e6 !important; }
+                                        .user-panel .info a { color: #1e1e2d !important; }
+                                        /* Nav Items */
+                                        .nav-sidebar .nav-item > .nav-link { color: #1e1e2d !important; }
+                                        .nav-sidebar .nav-item > .nav-link p { color: #1e1e2d !important; }
+                                        .nav-sidebar .nav-header { color: #7f7f7f !important; }
+                                        .main-sidebar .nav-link.active { background-color: #007bff !important; color: #fff !important; }
+                                        .main-sidebar .nav-link.active p { color: #fff !important; }
+                                        /* Header & Content */
+                                        .main-header { background-color: #ffffff !important; color: #1e1e2d !important; border-bottom: 1px solid #dee2e6 !important; }
+                                        .main-header .nav-link { color: #1e1e2d !important; }
+                                        .content-wrapper { background-color: #f4f6f9 !important; }
+                                        .content-header { color: #1e1e2d !important; }
+                                        /* Cards & Tables */
+                                        .card { background-color: #ffffff !important; color: #1e1e2d !important; }
+                                        .card-header { background-color: #ffffff !important; border-bottom: 1px solid #dee2e6 !important; color: #1e1e2d !important; }
+                                        .card-footer { background-color: #f7f7f7 !important; color: #1e1e2d !important; border-top: 1px solid #dee2e6 !important; }
+                                        .card-title { color: #1e1e2d !important; }
+                                        .table { color: #1e1e2d !important; background-color: #ffffff !important; }
+                                        .table thead th { border-bottom: 2px solid #dee2e6 !important; color: #1e1e2d !important; }
+                                        .table td, .table th { border-top: 1px solid #dee2e6 !important; }
+                                        /* Dropdowns */
+                                        .dropdown-menu { background-color: #ffffff !important; color: #1e1e2d !important; border: 1px solid #dee2e6 !important; }
+                                        .dropdown-item { color: #1e1e2d !important; }
+                                        .dropdown-item:hover { background-color: #f8f9fa !important; }
+                                        /* Footer & Forms */
+                                        .main-footer { background-color: #ffffff !important; color: #1e1e2d !important; border-top: 1px solid #dee2e6 !important; }
+                                        .form-control, .custom-select, textarea, input { background-color: #ffffff !important; color: #1e1e2d !important; border: 1px solid #ced4da !important; }
+                                        .input-group-text { background-color: #e9ecef !important; color: #495057 !important; border: 1px solid #ced4da !important; }
+                                        .btn-default { background-color: #f8f9fa !important; color: #444 !important; border-color: #ddd !important; }
+                                        /* Custom File Input & Progress */
+                                        .custom-file-label { background-color: #ffffff !important; color: #495057 !important; border: 1px solid #ced4da !important; }
+                                        .custom-file-label::after { background-color: #e9ecef !important; color: #495057 !important; border-left: 1px solid #ced4da !important; }
+                                        .progress { background-color: #e9ecef !important; }
+                                        /* Dashboard Widgets */
+                                        .info-box { background-color: #ffffff !important; color: #1e1e2d !important; }
+                                        .small-box-footer { background-color: rgba(0,0,0,0.1) !important; color: #1e1e2d !important; }
+                                        .btn-app { background-color: #f8f9fa !important; color: #444 !important; border: 1px solid #ddd !important; }
+                                    `;
+                                } else {
+                                    return common + `
+                                        body { background-color: #454d55 !important; color: #fff !important; } 
+                                        .main-sidebar { background-color: #343a40 !important; } 
+                                        /* Brand Link */
+                                        .brand-link { background-color: #343a40 !important; color: #fff !important; border-bottom: 1px solid #4b545c !important; display: flex !important; align-items: center !important; }
+                                        .brand-link .brand-text { color: #fff !important; }
+                                        .user-panel { border-bottom: 1px solid #4b545c !important; }
+                                        .user-panel .info a { color: #c2c7d0 !important; }
+                                        /* Nav Items */
+                                        .nav-sidebar .nav-item > .nav-link { color: #c2c7d0 !important; }
+                                        .nav-sidebar .nav-item > .nav-link p { color: #c2c7d0 !important; }
+                                        .nav-sidebar .nav-header { color: #c2c7d0 !important; }
+                                        .main-sidebar .nav-link.active { background-color: #007bff !important; color: #fff !important; }
+                                        .main-sidebar .nav-link.active p { color: #fff !important; }
+                                        /* Header & Content */
+                                        .main-header { background-color: #343a40 !important; color: #fff !important; border-bottom: 1px solid #4b545c !important; }
+                                        .main-header .nav-link { color: #fff !important; }
+                                        .content-wrapper { background-color: #454d55 !important; }
+                                        .content-header { color: #fff !important; }
+                                        /* Cards & Tables */
+                                        .card { background-color: #343a40 !important; color: #fff !important; }
+                                        .card-header { background-color: #343a40 !important; border-bottom: 1px solid #4b545c !important; color: #fff !important; }
+                                        .card-footer { background-color: #343a40 !important; border-top: 1px solid #4b545c !important; color: #fff !important; }
+                                        .card-title { color: #fff !important; }
+                                        .table { color: #fff !important; background-color: #343a40 !important; }
+                                        .table thead th { border-bottom: 2px solid #4b545c !important; color: #fff !important; }
+                                        .table td, .table th { border-top: 1px solid #4b545c !important; }
+                                        /* Dropdowns */
+                                        .dropdown-menu { background-color: #343a40 !important; color: #fff !important; border: 1px solid #4b545c !important; }
+                                        .dropdown-item { color: #fff !important; }
+                                        .dropdown-item:hover { background-color: #3f474e !important; }
+                                        /* Footer & Forms */
+                                        .main-footer { background-color: #343a40 !important; color: #fff !important; border-top: 1px solid #4b545c !important; }
+                                        .form-control, .custom-select, textarea, input { background-color: #343a40 !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                                        .form-control:focus, .custom-select:focus, textarea:focus, input:focus { background-color: #3f474e !important; color: #fff !important; }
+                                        .input-group-text { background-color: #3f474e !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                                        .btn-default { background-color: #3f474e !important; color: #fff !important; border-color: #6c757d !important; }
+                                        .btn { color: #fff !important; }
+                                        .btn-primary { background-color: #007bff !important; border-color: #007bff !important; }
+                                        .btn-danger { background-color: #dc3545 !important; border-color: #dc3545 !important; }
+                                        .btn-success { background-color: #28a745 !important; border-color: #28a745 !important; }
+                                        .btn-warning { background-color: #ffc107 !important; border-color: #ffc107 !important; color: #1f2d3d !important; }
+                                        /* Custom File Input & Progress */
+                                        .custom-file-label { background-color: #343a40 !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                                        .custom-file-label::after { background-color: #3f474e !important; color: #fff !important; border-left: 1px solid #6c757d !important; }
+                                        .progress { background-color: #3f474e !important; }
+                                        /* Dashboard Widgets */
+                                        .info-box { background-color: #343a40 !important; color: #fff !important; }
+                                        .info-box-content { color: #fff !important; }
+                                        .small-box { color: #fff !important; }
+                                        .small-box-footer { background-color: rgba(0,0,0,0.2) !important; color: #fff !important; }
+                                        .btn-app { background-color: #3f474e !important; color: #fff !important; border: 1px solid #6c757d !important; }
+                                    `;
+                                }
+                            }
+                            function updateThemeUI() {
+                                const storedTheme = localStorage.getItem('appTheme') || 'system';
+                                const effective = getEffectiveTheme(storedTheme);
+                                
+                                // Update Icon
+                                if(themeIcon) {
+                                    if(storedTheme === 'light') { themeIcon.className = 'fas fa-sun'; themeIcon.style.color = '#ffc107'; }
+                                    else if(storedTheme === 'dark') { themeIcon.className = 'fas fa-moon'; themeIcon.style.color = '#9090aa'; }
+                                    else { themeIcon.className = 'fas fa-desktop'; themeIcon.style.color = 'var(--text-muted)'; }
+                                }
+
+                                document.documentElement.setAttribute('data-theme', effective);
+                                
+                                // Dynamic CSS Update
+                                const styleTag = document.getElementById('theme-css');
+                                if(styleTag) {
+                                    styleTag.innerHTML = getThemeCss(effective);
+                                }
+                                
+                                const sidebar = document.querySelector('.main-sidebar');
+                                const navbar = document.querySelector('.main-header');
+
+                                if (effective === 'light') {
+                                    document.body.classList.remove('dark-mode');
+                                    if(sidebar) { sidebar.classList.remove('sidebar-dark-primary'); sidebar.classList.add('sidebar-light-primary'); }
+                                    if(navbar) { navbar.classList.remove('navbar-dark'); navbar.classList.add('navbar-light', 'navbar-white'); }
+                                } else {
+                                    document.body.classList.add('dark-mode');
+                                    if(sidebar) { sidebar.classList.remove('sidebar-light-primary'); sidebar.classList.add('sidebar-dark-primary'); }
+                                    if(navbar) { navbar.classList.remove('navbar-light', 'navbar-white'); navbar.classList.add('navbar-dark'); }
+                                }
+                            }
+
+                            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeUI);
+                            
+                            // Initial call
+                            updateThemeUI();
+
+                            window.setAppTheme = function(theme) {
+                                localStorage.setItem('appTheme', theme);
+                                document.cookie = "appTheme=" + theme + "; path=/; max-age=31536000"; // 1 year expiry
+                                updateThemeUI();
+                            };
+
+                            if(themeToggle && themeMenu) {
+                                themeToggle.addEventListener('click', function(e) {
+                                    e.stopPropagation();
+                                    const isVisible = themeMenu.style.display === 'block';
+                                    closeAllMenus();
+                                    if(!isVisible) themeMenu.style.display = 'block';
+                                });
+                            }
+                        });
+                    </script>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Admin/Logout">
+                        <i class="fas fa-sign-out-alt"></i> Çıkış
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar elevation-4 @(isDark ? "sidebar-dark-primary" : "sidebar-light-primary")">
+            <!-- Brand Logo -->
+            <a href="/Admin/Dashboard" class="brand-link">
+                <i class="fas fa-user-tie brand-image"></i>
+                <span class="brand-text font-weight-light">Portfolio Admin</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item">
+                            <a href="/Admin/Dashboard" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>@SharedLocalizer["Dashboard"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-header">@SharedLocalizer["ContentManagement"]</li>
+                        <li class="nav-item">
+                            <a href="/Admin/WelcomeMessage" class="nav-link">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>@SharedLocalizer["WelcomeMessage"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/PersonalInfo" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>@SharedLocalizer["PersonalInfo"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/Educations" class="nav-link">
+                                <i class="nav-icon fas fa-graduation-cap"></i>
+                                <p>@SharedLocalizer["Education"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/Experiences" class="nav-link">
+                                <i class="nav-icon fas fa-briefcase"></i>
+                                <p>@SharedLocalizer["JobExperience"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/Skills" class="nav-link">
+                                <i class="nav-icon fas fa-code"></i>
+                                <p>@SharedLocalizer["Skills"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/Languages" class="nav-link">
+                                <i class="nav-icon fas fa-language"></i>
+                                <p>@SharedLocalizer["Languages"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/Certificates" class="nav-link">
+                                <i class="nav-icon fas fa-certificate"></i>
+                                <p>@SharedLocalizer["Certificates"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/Projects" class="nav-link">
+                                <i class="nav-icon fas fa-project-diagram"></i>
+                                <p>@SharedLocalizer["Projects"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/References" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>@SharedLocalizer["References"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/SocialMediaSettings" class="nav-link">
+                                <i class="nav-icon fas fa-share-alt"></i>
+                                <p>@SharedLocalizer["SocialLinks"]</p>
+                            </a>
+                        </li>
+                        <li class="nav-header">@SharedLocalizer["Communication"]</li>
+                        <li class="nav-item">
+                            <a href="/Admin/Contacts" class="nav-link">
+                                <i class="nav-icon fas fa-envelope"></i>
+                                <p>@SharedLocalizer["Messages"]</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Content Header -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <i class="icon fas fa-check"></i> @TempData["Success"]
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2024 Portfolio CV.</strong> Tüm hakları saklıdır.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

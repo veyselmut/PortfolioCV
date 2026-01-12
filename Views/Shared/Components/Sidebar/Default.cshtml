@@ -1,0 +1,87 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<PortfolioCV.SharedResource> SharedLocalizer
+@{
+    var personalInfo = ViewBag.PersonalInfo as PersonalInfo;
+    var languages = ViewBag.Languages as List<Language>;
+}
+
+<div class="info-bar" id="sidebar">
+    <div class="header">
+        <div class="avatar">
+            @if (!string.IsNullOrEmpty(personalInfo?.AvatarPath))
+            {
+                <img src="@personalInfo.AvatarPath" alt="@personalInfo.FullName">
+            }
+            else
+            {
+                <img src="https://ui-avatars.com/api/?name=Veysel+Mut&background=ffc107&color=1e1e28" alt="Veysel Mut">
+            }
+        </div>
+        <div class="name-header">
+            <h5>@(personalInfo?.FullName ?? "Veysel Mut")</h5>
+            <span class="sm-text">@(personalInfo?.Title ?? "Mekatronik Müh. / Yazılım Geliştirici")</span>
+        </div>
+    </div>
+
+    <div class="info-bar-content">
+        <div class="info-list">
+            <ul>
+                <li><span class="label">@SharedLocalizer["Address"]:</span> <span class="value">@(personalInfo?.Address ?? "İstanbul")</span></li>
+                <li><span class="label">@SharedLocalizer["Phone"]:</span> <span class="value">@(personalInfo?.Phone ?? "+90 531 229 74 05")</span></li>
+                <li><span class="label">@SharedLocalizer["Email"]:</span> <span class="value">@(personalInfo?.Email ?? "veysel.mut@hotmail.com")</span></li>
+            </ul>
+        </div>
+
+        <!-- Languages Section -->
+        @if (languages != null && languages.Any())
+        {
+            <div class="sidebar-section">
+                <h6 class="sidebar-section-title">@SharedLocalizer["Languages"]</h6>
+                <div class="circular-skills-grid">
+                    @foreach (var lang in languages)
+                    {
+                        var percentage = lang.Level == "C2" ? 100 : lang.Level == "C1" ? 85 : lang.Level == "B2" ? 70 : lang.Level == "B1" ? 55 : lang.Level == "A2" ? 40 : 25;
+                        var radius = 28.0;
+                        var circumference = 2 * Math.PI * radius;
+                        var offset = circumference - (percentage / 100.0 * circumference);
+                        
+                        var circStr = circumference.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
+                        var offsetStr = offset.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
+                        
+                        <div class="circular-skill">
+                            <div class="circular-progress-wrapper">
+                                <svg class="circular-progress" width="70" height="70" viewBox="0 0 70 70">
+                                    <circle class="circular-bg" cx="35" cy="35" r="@radius"></circle>
+                                    <circle class="circular-bar" cx="35" cy="35" r="@radius" 
+                                            data-offset="@offsetStr"
+                                            style="stroke-dasharray: @circStr; stroke-dashoffset: @circStr"></circle>
+                                </svg>
+                                <div class="circular-text">
+                                    <span class="circular-percentage" style="font-size: 15px;">@lang.Level</span>
+                                </div>
+                            </div>
+                            <div class="circular-skill-info">
+                                <span class="circular-skill-name" style="margin-top: 5px;">@lang.Name</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        
+        
+    </div>
+
+    <div class="info-bar-footer">
+        @{
+            var sm = ViewBag.SocialMedia as SocialMedia;
+        }
+        <div class="social-links">
+            @if(!string.IsNullOrEmpty(sm?.Github)) { <a href="@sm.Github" target="_blank"><i class="fab fa-github"></i></a> }
+            @if(!string.IsNullOrEmpty(sm?.LinkedIn)) { <a href="@sm.LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a> }
+            @if(!string.IsNullOrEmpty(sm?.Twitter)) { <a href="@sm.Twitter" target="_blank"><i class="fab fa-twitter"></i></a> }
+            @if(!string.IsNullOrEmpty(sm?.Instagram)) { <a href="@sm.Instagram" target="_blank"><i class="fab fa-instagram"></i></a> }
+            @if(!string.IsNullOrEmpty(sm?.Youtube)) { <a href="@sm.Youtube" target="_blank"><i class="fab fa-youtube"></i></a> }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+@model CvReference
+
+@{
+    ViewData["Title"] = "Referans Düzenle";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Referans Bilgisi Düzenle</h3>
+            </div>
+            <form method="post" action="/Admin/EditReference">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Ad Soyad</label>
+                            <input type="text" name="Name" value="@Model.Name" class="form-control" required />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Pozisyon</label>
+                            <input type="text" name="Position" value="@Model.Position" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Çalıştığı Firma</label>
+                            <input type="text" name="Company" value="@Model.Company" class="form-control" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Sıra</label>
+                            <input type="number" name="Order" value="@Model.Order" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>E-posta</label>
+                            <input type="email" name="Email" value="@Model.Email" class="form-control" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Telefon</label>
+                            <input type="text" name="Phone" value="@Model.Phone" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-info">Güncelle</button>
+                    <a href="/Admin/References" class="btn btn-default">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

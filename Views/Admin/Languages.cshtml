@@ -1,0 +1,39 @@
+@model List<Language>
+
+@{
+    ViewData["Title"] = "Diller";
+    Layout = "_AdminLayout";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Yabancı Dil Listesi</h3>
+        <div class="card-tools">
+            <a href="/Admin/CreateLanguage" class="btn btn-sm btn-primary">Yeni Ekle</a>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Dil</th>
+                    <th>Seviye</th>
+                    <th style="width: 150px">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Level</td>
+                        <td>
+                            <a href="/Admin/EditLanguage/@item.Id" class="btn btn-xs btn-info">Düzenle</a>
+                            <a href="/Admin/DeleteLanguage/@item.Id" class="btn btn-xs btn-danger" onclick="return confirm('Silmek istediğinize emin misiniz?')">Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+@model Project
+
+@{
+    ViewData["Title"] = "Proje Ekle";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Proje Detayları</h3>
+            </div>
+            <form method="post" action="/Admin/CreateProject">
+                @Html.AntiForgeryToken()
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Proje Adı</label>
+                        <input type="text" name="Name" class="form-control" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Proje Açıklaması</label>
+                        <textarea name="Description" class="form-control" rows="3" placeholder="Proje hakkında kısa açıklama..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Görevler</label>
+                        <textarea name="Tasks" class="form-control" rows="4" placeholder="Her satıra bir görev yazın...&#10;- Frontend geliştirme&#10;- Backend API tasarımı&#10;- Veritabanı yönetimi"></textarea>
+                        <small class="form-text text-muted">Her satıra bir görev yazın</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Proje Tarihi</label>
+                        <input type="date" name="Date" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>URL Link</label>
+                        <input type="url" name="Url" class="form-control" placeholder="https://github.com/..." />
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <a href="/Admin/Projects" class="btn btn-default">İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

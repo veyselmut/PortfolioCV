@@ -1,0 +1,159 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@ViewBag.ContactCount</h3>
+                <p>Toplam Mesaj</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <a href="/Admin/Contacts" class="small-box-footer">
+                Detaylar <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>@ViewBag.UnreadCount</h3>
+                <p>Okunmamış Mesaj</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-envelope-open"></i>
+            </div>
+            <a href="/Admin/Contacts" class="small-box-footer">
+                Görüntüle <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Hızlı Erişim</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-primary"><i class="fas fa-home"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Karşılama Mesajı</span>
+                                <a href="/Admin/WelcomeMessage" class="btn btn-sm btn-primary mt-2">Düzenle</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-success"><i class="fas fa-user"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Kişisel Bilgiler</span>
+                                <a href="/Admin/PersonalInfo" class="btn btn-sm btn-success mt-2">Düzenle</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info"><i class="fas fa-graduation-cap"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Eğitim</span>
+                                <a href="/Admin/Educations" class="btn btn-sm btn-info mt-2">Yönet</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-warning"><i class="fas fa-briefcase"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">İş Deneyimi</span>
+                                <a href="/Admin/Experiences" class="btn btn-sm btn-warning mt-2">Yönet</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-danger"><i class="fas fa-code"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Yetenekler</span>
+                                <a href="/Admin/Skills" class="btn btn-sm btn-danger mt-2">Yönet</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-secondary"><i class="fas fa-envelope"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Mesajlar</span>
+                                <a href="/Admin/Contacts" class="btn btn-sm btn-secondary mt-2">Görüntüle</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-purple" style="background-color: #6f42c1 !important; color: white;"><i class="fas fa-language"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Diller</span>
+                                <a href="/Admin/Languages" class="btn btn-sm mt-2 text-white" style="background-color: #6f42c1;">Yönet</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-olive"><i class="fas fa-certificate"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Sertifikalar</span>
+                                <a href="/Admin/Certificates" class="btn btn-sm bg-olive mt-2 text-white">Yönet</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-teal"><i class="fas fa-project-diagram"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Projeler</span>
+                                <a href="/Admin/Projects" class="btn btn-sm bg-teal mt-2 text-white">Yönet</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-maroon"><i class="fas fa-users"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Referanslar</span>
+                                <a href="/Admin/References" class="btn btn-sm bg-maroon mt-2 text-white">Yönet</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-dark"><i class="fas fa-share-alt"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Sosyal Medya</span>
+                                <a href="/Admin/SocialMediaSettings" class="btn btn-sm btn-dark mt-2">Düzenle</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

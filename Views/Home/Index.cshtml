@@ -1,0 +1,102 @@
+@model WelcomeMessage
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<PortfolioCV.SharedResource> SharedLocalizer
+
+@{
+    ViewData["Title"] = SharedLocalizer["Home"];
+}
+
+@if (ViewBag.DbError != null || ViewBag.StartupError != null)
+{
+    <div style="background-color: #ffcccc; color: #cc0000; padding: 20px; text-align: left; margin: 20px; border: 2px solid red;">
+        <h3>⚠️ CRITICAL DATABASE ERROR</h3>
+        <p><strong>Startup Error:</strong> @ViewBag.StartupError</p>
+        <p><strong>Runtime Error:</strong> @ViewBag.DbError</p>
+        <p><strong>Connection String (App Sees):</strong> @ViewBag.ConnString</p>
+        <hr/>
+        <pre>@ViewBag.FullEx</pre>
+    </div>
+}
+
+<!-- Banner / Hero Section -->
+<div class="banner-box p-30" style="padding: 100px 60px 100px 30px; margin: 0;">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+        <h1 class="text-white mb-30" style="font-size: 50px; font-weight: 800; line-height: 1.2;">
+            @SharedLocalizer["DiscoverPortfolio"]: <br>
+            <span class="text-gold typing-cursor" id="typewriter"></span>
+        </h1>
+        
+        <p class="mb-30" style="max-width: 500px; color: var(--text-muted);">
+            @(Model?.Description ?? "Merhaba! Yazılım geliştirme alanında uzmanlaşmış bir profesyonelim. Modern web teknolojileri ile kullanıcı dostu ve performanslı çözümler üretiyorum.")
+        </p>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+             <div class="section-title">
+                 <span>@SharedLocalizer["Services"]</span>
+             </div>
+             
+             <div class="row" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                 <!-- Service Box 1 -->
+                 <div class="art-card" style="flex: 1; min-width: 250px;">
+                     <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["WebDevelopment"]</h5>
+                     <p class="text-muted">@SharedLocalizer["WebDevDesc"]</p>
+                 </div>
+                 
+                 <!-- Service Box 2 -->
+                 <div class="art-card" style="flex: 1; min-width: 250px;">
+                     <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["BackendSystems"]</h5>
+                     <p class="text-muted">@SharedLocalizer["BackendDesc"]</p>
+                 </div>
+
+                 <!-- Service Box 3 -->
+                 <div class="art-card" style="flex: 1; min-width: 250px;">
+                     <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["Database"]</h5>
+                     <p class="text-muted">@SharedLocalizer["DatabaseDesc"]</p>
+                 </div>
+             </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple Typewriter Effect
+    const textOptions = @Html.Raw(Json.Serialize(SharedLocalizer["Roles"].Value.Split(',')));
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typeElement = document.getElementById('typewriter');
+
+    function type() {
+        const currentText = textOptions[textIndex];
+        
+        if (isDeleting) {
+            typeElement.textContent = currentText.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            typeElement.textContent = currentText.substring(0, charIndex + 1);
+            charIndex++;
+        }
+
+        let typeSpeed = 100;
+        if (isDeleting) typeSpeed /= 2;
+
+        if (!isDeleting && charIndex === currentText.length) {
+            isDeleting = true;
+            typeSpeed = 2000; // Pause at end
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            textIndex = (textIndex + 1) % textOptions.length;
+            typeSpeed = 500;
+        }
+
+        setTimeout(type, typeSpeed);
+    }
+
+    document.addEventListener('DOMContentLoaded', type);
+</script>

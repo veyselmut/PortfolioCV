@@ -1,0 +1,41 @@
+@model List<CvReference>
+
+@{
+    ViewData["Title"] = "Referanslar";
+    Layout = "_AdminLayout";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Referans Listesi</h3>
+        <div class="card-tools">
+            <a href="/Admin/CreateReference" class="btn btn-sm btn-primary">Yeni Ekle</a>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th>Firma/Pozisyon</th>
+                    <th>İletişim</th>
+                    <th style="width: 150px">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Company / @item.Position</td>
+                        <td>@item.Email <br> @item.Phone</td>
+                        <td>
+                            <a href="/Admin/EditReference/@item.Id" class="btn btn-xs btn-info">Düzenle</a>
+                            <a href="/Admin/DeleteReference/@item.Id" class="btn btn-xs btn-danger" onclick="return confirm('Silmek istediğinize emin misiniz?')">Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

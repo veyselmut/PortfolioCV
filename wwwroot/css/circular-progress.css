@@ -1,0 +1,72 @@
+/* Circular Progress Bars for Sidebar Skills */
+.circular-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.circular-skill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.circular-progress-wrapper {
+    position: relative;
+    width: 70px;
+    height: 70px;
+}
+
+.circular-progress {
+    transform: rotate(-90deg);
+}
+
+.circular-bg {
+    fill: none;
+    stroke: var(--bg-secondary);
+    stroke-width: 4;
+}
+
+.circular-bar {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 4;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s ease;
+    filter: drop-shadow(0 0 4px rgba(255, 193, 7, 0.3));
+}
+
+.circular-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.circular-percentage {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.circular-skill-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.circular-skill-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.circular-skill-level {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: 500;
+}

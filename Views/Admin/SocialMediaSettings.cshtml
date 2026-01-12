@@ -1,0 +1,44 @@
+@model SocialMedia
+
+@{
+    ViewData["Title"] = "Sosyal Bağlantılar";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card card-dark">
+            <div class="card-header">
+                <h3 class="card-title">Sosyal Medya Linkleri</h3>
+            </div>
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <div class="card-body">
+                    <div class="form-group">
+                        <label><i class="fab fa-linkedin"></i> LinkedIn</label>
+                        <input type="url" name="LinkedIn" value="@Model?.LinkedIn" class="form-control" placeholder="https://linkedin.com/in/username" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fab fa-twitter"></i> Twitter</label>
+                        <input type="url" name="Twitter" value="@Model?.Twitter" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fab fa-instagram"></i> Instagram</label>
+                        <input type="url" name="Instagram" value="@Model?.Instagram" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fab fa-youtube"></i> YouTube</label>
+                        <input type="url" name="Youtube" value="@Model?.Youtube" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fab fa-github"></i> GitHub</label>
+                        <input type="url" name="Github" value="@Model?.Github" class="form-control" />
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
