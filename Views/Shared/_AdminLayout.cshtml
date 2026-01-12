@@ -265,6 +265,23 @@
                     </div>
                 </li>
 
+                <!-- Admin Profile -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i>
+                        <span class="d-none d-md-inline ml-1">@User.Identity?.Name</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow-sm" style="min-width: 180px;">
+                        <a href="/Admin/Profile" class="dropdown-item">
+                            <i class="fas fa-user-cog mr-2"></i> Profil Ayarları
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/Admin/Logout" class="dropdown-item text-danger">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Çıkış Yap
+                        </a>
+                    </div>
+                </li>
+
                 <!-- Theme Switcher -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">

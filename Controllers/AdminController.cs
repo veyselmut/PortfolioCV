@@ -35,54 +35,14 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(string username, string password)
     {
-        // Security Fix: Explicitly block/delete 'admin'
-        if(username.ToLower() == "admin")
-        {
-             var oldAdmin = await _context.Admins.FirstOrDefaultAsync(a => a.Username == "admin");
-             if(oldAdmin != null)
-             {
-                 _context.Admins.Remove(oldAdmin);
-                 await _context.SaveChangesAsync();
-             }
-             ViewBag.Error = "Bu kullanıcı kaldırılmıştır.";
-             return View();
-        }
-
         var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Username == username);
-        
-        // RECOVERY: If 'praimkepa' is missing, create it instantly
-        if (admin == null && username == "praimkepa" && password == "3408v+-0")
+
+        if (admin != null && PortfolioCV.Helpers.SecurityHelper.VerifyPassword(admin.Password, password))
         {
-             admin = new PortfolioCV.Models.Admin 
-             { 
-                 Username = "praimkepa", 
-                 Password = PortfolioCV.Helpers.SecurityHelper.HashPassword("3408v+-0"),
-                 Email = "admin@example.com"
-             };
-             _context.Admins.Add(admin);
-             await _context.SaveChangesAsync();
-             // Now admin exists, proceed to login
+            await SignInUser(admin);
+            return RedirectToAction("Dashboard");
         }
 
-        if (admin != null)
-        {
-            // 1. Try Hash Verification
-            if (PortfolioCV.Helpers.SecurityHelper.VerifyPassword(admin.Password, password))
-            {
-                await SignInUser(admin);
-                return RedirectToAction("Dashboard");
-            }
-            
-            // 2. Fallback: Plain Text Check
-            if (admin.Password == password)
-            {
-                admin.Password = PortfolioCV.Helpers.SecurityHelper.HashPassword(password);
-                await _context.SaveChangesAsync();
-                
-                await SignInUser(admin);
-                return RedirectToAction("Dashboard");
-            }
-        }
         ViewBag.Error = "Hatalı giriş!";
         return View();
     }
@@ -503,5 +463,70 @@ public class AdminController : Controller
         var item = await _context.Contacts.FindAsync(id);
         if (item != null) { _context.Contacts.Remove(item); await _context.SaveChangesAsync(); }
         return RedirectToAction("Contacts");
+    }
+
+    // Admin Profile Management
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> Profile()
+    {
+        var username = User.Identity?.Name;
+        var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Username == username);
+        return View(admin);
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> Profile(string username, string email, string currentPassword, string newPassword, string confirmPassword)
+    {
+        var currentUsername = User.Identity?.Name;
+        var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Username == currentUsername);
+
+        if (admin == null)
+        {
+            ViewBag.Error = "Admin kullanıcısı bulunamadı.";
+            return View(admin);
+        }
+
+        // Verify current password
+        if (!PortfolioCV.Helpers.SecurityHelper.VerifyPassword(admin.Password, currentPassword))
+        {
+            ViewBag.Error = "Mevcut şifre yanlış.";
+            return View(admin);
+        }
+
+        // Update username and email
+        admin.Username = username;
+        admin.Email = email;
+
+        // Update password if provided
+        if (!string.IsNullOrEmpty(newPassword))
+        {
+            if (newPassword != confirmPassword)
+            {
+                ViewBag.Error = "Yeni şifreler eşleşmiyor.";
+                return View(admin);
+            }
+
+            if (newPassword.Length < 6)
+            {
+                ViewBag.Error = "Yeni şifre en az 6 karakter olmalıdır.";
+                return View(admin);
+            }
+
+            admin.Password = PortfolioCV.Helpers.SecurityHelper.HashPassword(newPassword);
+        }
+
+        await _context.SaveChangesAsync();
+
+        // If username changed, update the authentication cookie
+        if (currentUsername != username)
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await SignInUser(admin);
+        }
+
+        ViewBag.Success = "Profil başarıyla güncellendi.";
+        return View(admin);
     }
 }
