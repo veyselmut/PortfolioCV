@@ -77,29 +77,17 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<AppDbContext>();
         context.Database.EnsureCreated();
 
-        // Admin Seed/Update
-        var admin = context.Admins.FirstOrDefault();
-        if (admin == null)
+        // Create default admin user if none exists
+        if (!context.Admins.Any())
         {
-            context.Admins.Add(new PortfolioCV.Models.Admin { Username = "praimkepa", Password = PortfolioCV.Helpers.SecurityHelper.HashPassword("3408v+-0"), Email = "admin@example.com" });
+            context.Admins.Add(new PortfolioCV.Models.Admin 
+            { 
+                Username = "admin", 
+                Password = PortfolioCV.Helpers.SecurityHelper.HashPassword("admin123"), 
+                Email = "admin@example.com" 
+            });
+            context.SaveChanges();
         }
-        else
-        {
-            // Update password only if username matches (or force update for security fix)
-            if (admin.Username == "praimkepa" && !admin.Password.Contains(".")) 
-            {
-                 admin.Password = PortfolioCV.Helpers.SecurityHelper.HashPassword("3408v+-0");
-            }
-        }
-        
-        // Cleanup old admin if exists
-        var oldAdmin = context.Admins.FirstOrDefault(a => a.Username == "admin");
-        if(oldAdmin != null)
-        {
-            context.Admins.Remove(oldAdmin);
-        }
-
-        context.SaveChanges();
     }
     catch (Exception ex)
     {

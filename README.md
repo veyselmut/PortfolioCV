@@ -70,8 +70,8 @@ A professional, multilingual portfolio and CV management system built with **ASP
    - Admin Panel: `https://localhost:5001/Admin/Login`
 
 ### Default Admin Credentials
-- **Username**: `praimkepa`
-- **Password**: `3408v+-0`
+- **Username**: `admin`
+- **Password**: `admin123`
 
 ⚠️ **Important**: Change these credentials immediately after first login!
 
