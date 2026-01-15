@@ -1,0 +1,64 @@
+@model List<PortfolioCV.Models.Service>
+
+@{
+    ViewData["Title"] = "Hizmetler";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-briefcase mr-2"></i>Hizmetler Yönetimi</h3>
+                <div class="card-tools">
+                    <a href="/Admin/CreateService" class="btn btn-success btn-sm">
+                        <i class="fas fa-plus mr-1"></i>Yeni Hizmet Ekle
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="alert alert-info m-3">
+                        <i class="icon fas fa-info-circle"></i>
+                        Henüz hizmet eklenmemiş. Yeni hizmet eklemek için yukarıdaki butonu kullanın.
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px">Sıra</th>
+                                <th style="width: 80px">İkon</th>
+                                <th>Başlık</th>
+                                <th>Açıklama</th>
+                                <th style="width: 150px">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var service in Model)
+                            {
+                                <tr>
+                                    <td>@service.Order</td>
+                                    <td><i class="@service.Icon fa-2x"></i></td>
+                                    <td><strong>@service.Title</strong></td>
+                                    <td>@service.Description</td>
+                                    <td>
+                                        <a href="/Admin/EditService/@service.Id" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="/Admin/DeleteService/@service.Id" class="btn btn-sm btn-danger" 
+                                           onclick="return confirm('Bu hizmeti silmek istediğinizden emin misiniz?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

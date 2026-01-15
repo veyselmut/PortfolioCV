@@ -29,6 +29,7 @@ public class HomeController : Controller
             }
             
             var welcomeMessage = await _context.WelcomeMessages.FirstOrDefaultAsync();
+            ViewBag.Services = await _context.Services.OrderBy(s => s.Order).ToListAsync();
             return View(welcomeMessage);
         }
         catch (Exception ex)

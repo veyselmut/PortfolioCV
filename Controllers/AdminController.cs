@@ -529,4 +529,42 @@ public class AdminController : Controller
         ViewBag.Success = "Profil başarıyla güncellendi.";
         return View(admin);
     }
+
+    // Services Management
+    [Authorize]
+    public async Task<IActionResult> Services() => View(await _context.Services.OrderBy(s => s.Order).ToListAsync());
+
+    [Authorize]
+    [HttpGet]
+    public IActionResult CreateService() => View();
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> CreateService(Service service)
+    {
+        _context.Services.Add(service);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Services");
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> EditService(int id) => View(await _context.Services.FindAsync(id));
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> EditService(Service service)
+    {
+        _context.Services.Update(service);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Services");
+    }
+
+    [Authorize]
+    public async Task<IActionResult> DeleteService(int id)
+    {
+        var item = await _context.Services.FindAsync(id);
+        if (item != null) { _context.Services.Remove(item); await _context.SaveChangesAsync(); }
+        return RedirectToAction("Services");
+    }
 }

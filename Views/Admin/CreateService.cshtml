@@ -1,0 +1,67 @@
+@model PortfolioCV.Models.Service
+
+@{
+    ViewData["Title"] = Model == null ? "Yeni Hizmet" : "Hizmet Düzenle";
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-briefcase mr-2"></i>@(Model == null ? "Yeni Hizmet Ekle" : "Hizmet Düzenle")
+                </h3>
+            </div>
+            <form method="post" action="@(Model == null ? "/Admin/CreateService" : "/Admin/EditService")">
+                @Html.AntiForgeryToken()
+                @if(Model != null) { <input type="hidden" name="Id" value="@Model.Id" /> }
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Başlık</label>
+                        <input type="text" name="Title" value="@Model?.Title" class="form-control" required placeholder="Örn: Web Geliştirme" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <textarea name="Description" class="form-control" rows="3" required placeholder="Hizmet açıklaması...">@Model?.Description</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>İkon (Font Awesome Class)</label>
+                        <input type="text" name="Icon" value="@(Model?.Icon ?? "fas fa-code")" class="form-control" required placeholder="fas fa-code" />
+                        <small class="form-text text-muted">
+                            Font Awesome ikonları: <a href="https://fontawesome.com/icons" target="_blank">fontawesome.com/icons</a>
+                        </small>
+                        <div class="mt-2">
+                            <strong>Önizleme:</strong> <i id="iconPreview" class="@(Model?.Icon ?? "fas fa-code") fa-2x ml-2"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sıra</label>
+                        <input type="number" name="Order" value="@(Model?.Order ?? 1)" class="form-control" required />
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save mr-1"></i>Kaydet
+                    </button>
+                    <a href="/Admin/Services" class="btn btn-default">
+                        <i class="fas fa-times mr-1"></i>İptal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Icon preview
+        $('input[name="Icon"]').on('input', function() {
+            var iconClass = $(this).val();
+            $('#iconPreview').attr('class', iconClass + ' fa-2x ml-2');
+        });
+    </script>
+}

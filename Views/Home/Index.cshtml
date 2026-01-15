@@ -42,23 +42,37 @@
              </div>
              
              <div class="row" style="display: flex; gap: 20px; flex-wrap: wrap;">
-                 <!-- Service Box 1 -->
-                 <div class="art-card" style="flex: 1; min-width: 250px;">
-                     <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["WebDevelopment"]</h5>
-                     <p class="text-muted">@SharedLocalizer["WebDevDesc"]</p>
-                 </div>
-                 
-                 <!-- Service Box 2 -->
-                 <div class="art-card" style="flex: 1; min-width: 250px;">
-                     <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["BackendSystems"]</h5>
-                     <p class="text-muted">@SharedLocalizer["BackendDesc"]</p>
-                 </div>
+                 @if (ViewBag.Services != null && ViewBag.Services.Count > 0)
+                 {
+                     @foreach (var service in ViewBag.Services)
+                     {
+                         <div class="art-card" style="flex: 1; min-width: 250px;">
+                             <div style="font-size: 2em; margin-bottom: 10px; color: var(--primary-color);">
+                                 <i class="@service.Icon"></i>
+                             </div>
+                             <h5 class="mb-15" style="color: var(--text-main);">@service.Title</h5>
+                             <p class="text-muted">@service.Description</p>
+                         </div>
+                     }
+                 }
+                 else
+                 {
+                     <!-- Default services if none in database -->
+                     <div class="art-card" style="flex: 1; min-width: 250px;">
+                         <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["WebDevelopment"]</h5>
+                         <p class="text-muted">@SharedLocalizer["WebDevDesc"]</p>
+                     </div>
+                     
+                     <div class="art-card" style="flex: 1; min-width: 250px;">
+                         <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["BackendSystems"]</h5>
+                         <p class="text-muted">@SharedLocalizer["BackendDesc"]</p>
+                     </div>
 
-                 <!-- Service Box 3 -->
-                 <div class="art-card" style="flex: 1; min-width: 250px;">
-                     <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["Database"]</h5>
-                     <p class="text-muted">@SharedLocalizer["DatabaseDesc"]</p>
-                 </div>
+                     <div class="art-card" style="flex: 1; min-width: 250px;">
+                         <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["Database"]</h5>
+                         <p class="text-muted">@SharedLocalizer["DatabaseDesc"]</p>
+                     </div>
+                 }
              </div>
         </div>
     </div>
