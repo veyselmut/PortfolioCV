@@ -13,6 +13,7 @@ It features a public-facing dynamic portfolio site and a powerful, separate Requ
 ## ✨ Key Features
 
 ### 🔐 Admin Panel (React)
+*   **Smart Initialization:** Auto-detects fresh installations and redirects to a setup wizard to create the first admin account.
 *   **Modern UI:** Built with Ant Design & Refine.
 *   **Secure Auth:** JWT-based authentication with secure cookie handling.
 *   **Advanced CRUD:** Smart tables with sorting, filtering, and searching.
@@ -38,10 +39,12 @@ It features a public-facing dynamic portfolio site and a powerful, separate Requ
 ### 1️⃣ Backend Setup (API & Public Site)
 1.  Clone the repository.
 2.  Update `appsettings.json` with your SQL Connection String.
-3.  Run migrations:
+3.  Apply Migrations:
     ```bash
     dotnet ef database update
     ```
+    *This will create the database schema. No initial data is seeded automatically for security reasons.*
+
 4.  Run the application:
     ```bash
     dotnet run
@@ -67,6 +70,13 @@ It features a public-facing dynamic portfolio site and a powerful, separate Requ
     npm start
     ```
 
+### 3️⃣ First Run & Initialization
+When you launch the Admin Panel for the first time:
+1.  The system checks if any admin user exists in the database.
+2.  If the database is empty (fresh install), you will be automatically redirected to the **/initialize** page.
+3.  Fill in the form to create your **Master Admin** account.
+4.  Once created, you will be redirected to the Login page to sign in with your new credentials.
+
 ---
 
 ## 📦 Deployment (IIS)
@@ -75,7 +85,7 @@ This project is optimized for IIS deployment.
 
 ### Backend Publish
 1.  Run `dotnet publish -c Release`.
-2.  Upload files to your server (e.g., `www.yourdomain.com`).
+2.  Upload files to your server (e.g., `www.yourdomain.com` or `api.yourdomain.com`).
 3.  **Important:** Ensure `web.config` is present to handle IIS modules.
 
 ### Admin Panel Publish
