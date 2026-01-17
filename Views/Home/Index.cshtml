@@ -5,18 +5,17 @@
 
 @{
     ViewData["Title"] = SharedLocalizer["Home"];
-}
-
-@if (ViewBag.DbError != null || ViewBag.StartupError != null)
-{
-    <div style="background-color: #ffcccc; color: #cc0000; padding: 20px; text-align: left; margin: 20px; border: 2px solid red;">
-        <h3>⚠️ CRITICAL DATABASE ERROR</h3>
-        <p><strong>Startup Error:</strong> @ViewBag.StartupError</p>
-        <p><strong>Runtime Error:</strong> @ViewBag.DbError</p>
-        <p><strong>Connection String (App Sees):</strong> @ViewBag.ConnString</p>
-        <hr/>
-        <pre>@ViewBag.FullEx</pre>
-    </div>
+    
+    // Fallback values if DB is empty
+    var title = Model?.Title ?? "Web Geliştirici & Tasarımcı";
+    var subtitle = Model?.Subtitle ?? "Mekatronik Mühendisi, Full Stack Developer, Freelancer";
+    var desc = Model?.Description ?? "Merhaba! Yazılım geliştirme alanında uzmanlaşmış bir profesyonelim. Modern web teknolojileri ile kullanıcı dostu ve performanslı çözümler üretiyorum.";
+    
+    // Split subtitle for typewriter effect
+    var roles = subtitle.Split(new[] { ',', '&', '/' }, StringSplitOptions.RemoveEmptyEntries)
+                       .Select(x => x.Trim())
+                       .Where(x => !string.IsNullOrWhiteSpace(x))
+                       .ToArray();
 }
 
 <!-- Banner / Hero Section -->
@@ -24,15 +23,17 @@
     <div class="banner-overlay"></div>
     <div class="banner-content">
         <h1 class="text-white mb-30" style="font-size: 50px; font-weight: 800; line-height: 1.2;">
-            @SharedLocalizer["DiscoverPortfolio"]: <br>
+            @title <br>
             <span class="text-gold typing-cursor" id="typewriter"></span>
         </h1>
         
         <p class="mb-30" style="max-width: 500px; color: var(--text-muted);">
-            @(Model?.Description ?? "Merhaba! Yazılım geliştirme alanında uzmanlaşmış bir profesyonelim. Modern web teknolojileri ile kullanıcı dostu ve performanslı çözümler üretiyorum.")
+            @desc
         </p>
+        
     </div>
 </div>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -42,7 +43,7 @@
              </div>
              
              <div class="row" style="display: flex; gap: 20px; flex-wrap: wrap;">
-                 @if (ViewBag.Services != null && ViewBag.Services.Count > 0)
+                 @if (ViewBag.Services != null && Enumerable.Count(ViewBag.Services) > 0)
                  {
                      @foreach (var service in ViewBag.Services)
                      {
@@ -59,18 +60,9 @@
                  {
                      <!-- Default services if none in database -->
                      <div class="art-card" style="flex: 1; min-width: 250px;">
-                         <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["WebDevelopment"]</h5>
-                         <p class="text-muted">@SharedLocalizer["WebDevDesc"]</p>
-                     </div>
-                     
-                     <div class="art-card" style="flex: 1; min-width: 250px;">
-                         <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["BackendSystems"]</h5>
-                         <p class="text-muted">@SharedLocalizer["BackendDesc"]</p>
-                     </div>
-
-                     <div class="art-card" style="flex: 1; min-width: 250px;">
-                         <h5 class="mb-15" style="color: var(--text-main);">@SharedLocalizer["Database"]</h5>
-                         <p class="text-muted">@SharedLocalizer["DatabaseDesc"]</p>
+                         <div style="font-size: 2em; margin-bottom: 10px; color: var(--primary-color);"><i class="fas fa-code"></i></div>
+                         <h5 class="mb-15" style="color: var(--text-main);">Veri Yok</h5>
+                         <p class="text-muted">Admin panelinden hizmet ekleyebilirsiniz.</p>
                      </div>
                  }
              </div>
@@ -80,13 +72,15 @@
 
 <script>
     // Simple Typewriter Effect
-    const textOptions = @Html.Raw(Json.Serialize(SharedLocalizer["Roles"].Value.Split(',')));
+    const textOptions = @Html.Raw(Json.Serialize(roles));
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
     const typeElement = document.getElementById('typewriter');
 
     function type() {
+        if (!textOptions || textOptions.length === 0) return;
+        
         const currentText = textOptions[textIndex];
         
         if (isDeleting) {

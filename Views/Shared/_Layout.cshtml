@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Localization
 @inject IHtmlLocalizer<PortfolioCV.SharedResource> SharedLocalizer
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 
 <!DOCTYPE html>
 <html lang="@(Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name ?? "tr")">
@@ -13,6 +14,8 @@
     <link rel="stylesheet" href="~/css/circular-progress.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Cookies Library -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script>
         (function() {
             var theme = localStorage.getItem('frontendTheme') || 'dark';
@@ -24,7 +27,7 @@
 
     <!-- Mobile Top Bar -->
     <div class="mobile-top-bar">
-        <a href="/" class="text-gold" style="font-weight: 700;">VM</a>
+        <a asp-controller="Home" asp-action="Index" class="text-gold" style="font-weight: 700;">VM</a>
         <i class="fas fa-bars" onclick="toggleSidebar()" style="color: #fff; cursor: pointer;"></i>
     </div>
 
@@ -41,9 +44,9 @@
                 <nav>
                     <ul>
                         <li><a href="/">@SharedLocalizer["Home"]</a></li>
-                        <li><a href="/Home/CV">@SharedLocalizer["Resume"]</a></li>
-                        <li><a href="/Home/Contact">@SharedLocalizer["Contact"]</a></li>
-                        <li><a href="/Admin/Login" style="color: #444;">@SharedLocalizer["AdminPanel"]</a></li>
+                        <li><a asp-controller="Home" asp-action="CV">@SharedLocalizer["Resume"]</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">@SharedLocalizer["Contact"]</a></li>
+                        <li><a href="@Configuration["AppSettings:AdminPanelUrl"]" style="color: #444;" target="_blank">@SharedLocalizer["AdminPanel"]</a></li>
                         <li style="margin-left: 10px; border-left: 1px solid #eee; padding-left: 10px;">
                             @{
                                 var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -72,10 +75,10 @@
                                     </button>
                                     
                                     <div class="lang-dropdown-menu" style="position:absolute; top:120%; right:0; background:var(--bg-panel); box-shadow:0 8px 20px rgba(0,0,0,0.25); border-radius:10px; padding:8px; min-width:160px; display:none; z-index:999; border:1px solid var(--border-color);">
-                                        <div onclick="document.getElementById('langFormTr').submit()" style="display:flex; align-items:center; gap:12px; padding:12px; cursor:pointer; border-radius:8px; transition:0.2s; font-size:14px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
+                                        <div onclick="setAppLanguage('tr')" style="display:flex; align-items:center; gap:12px; padding:12px; cursor:pointer; border-radius:8px; transition:0.2s; font-size:14px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
                                             <img src="https://flagcdn.com/w80/tr.png" style="width:28px; height:21px; border-radius:4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);"> <span style="font-weight: 500;">Türkçe</span>
                                         </div>
-                                        <div onclick="document.getElementById('langFormEn').submit()" style="display:flex; align-items:center; gap:12px; padding:12px; cursor:pointer; border-radius:8px; transition:0.2s; font-size:14px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
+                                        <div onclick="setAppLanguage('en')" style="display:flex; align-items:center; gap:12px; padding:12px; cursor:pointer; border-radius:8px; transition:0.2s; font-size:14px; color:var(--text-main);" onmouseover="this.style.background='var(--bg-dark)'" onmouseout="this.style.background='transparent'">
                                             <img src="https://flagcdn.com/w80/us.png" style="width:28px; height:21px; border-radius:4px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);"> <span style="font-weight: 500;">English</span>
                                         </div>
                                     </div>
@@ -107,6 +110,26 @@
 
                             <script>
                                 (function() {
+                                    var serverCulture = "@currentCulture"; // tr-TR or en-US
+
+                                    // Polling for Language Sync from Admin Panel
+                                    setInterval(function() {
+                                        var match = document.cookie.match(new RegExp('(^| )i18next=([^;]+)'));
+                                        if (match) {
+                                            var cookieLang = match[2]; // tr or en
+                                            // Map short -> long
+                                            var targetCulture = cookieLang === 'tr' ? 'tr-TR' : 'en-US';
+                                            
+                                            // Debug: console.log("Cookie:", cookieLang, "Server:", serverCulture);
+
+                                            if (cookieLang && targetCulture !== serverCulture && (cookieLang === 'tr' || cookieLang === 'en')) {
+                                                console.log("SYNC TRIGGERED: Changing language to " + cookieLang);
+                                                if (cookieLang === 'tr') document.getElementById('langFormTr').submit();
+                                                if (cookieLang === 'en') document.getElementById('langFormEn').submit();
+                                            }
+                                        }
+                                    }, 1000);
+
                                     // Shared Logic
                                     function closeAllMenus() {
                                         if(document.querySelector('.lang-dropdown-menu')) document.querySelector('.lang-dropdown-menu').style.display = 'none';
@@ -156,10 +179,41 @@
                                     // Initial Load
                                     updateThemeUI();
 
+                                    // Helper for Cookie Domain
+                                    function getCookieDomainAttr() {
+                                        var hostname = window.location.hostname;
+                                        if (hostname.indexOf('localhost') > -1 || hostname === '127.0.0.1') return "";
+                                        return "; domain=." + hostname.replace(/^www\./, "");
+                                    }
+
+                                    window.setAppLanguage = function(lang) {
+                                        document.cookie = "i18next=" + lang + "; path=/; max-age=31536000" + getCookieDomainAttr();
+                                        if (lang === 'tr') document.getElementById('langFormTr').submit();
+                                        if (lang === 'en') document.getElementById('langFormEn').submit();
+                                    };
+
                                     window.setAppTheme = function(theme) {
                                         localStorage.setItem('appTheme', theme);
+                                        localStorage.setItem('theme', theme); 
+
+                                        // Set Cookie for cross-port/subdomain sync
+                                        document.cookie = "theme=" + theme + "; path=/; max-age=31536000; samesite=lax" + getCookieDomainAttr();
+                                        
                                         updateThemeUI();
                                     };
+
+                                    // Polling to sync FROM Admin Panel (Cookie check)
+                                    setInterval(function() {
+                                        var match = document.cookie.match(new RegExp('(^| )theme=([^;]+)'));
+                                        if (match) {
+                                            var cookieTheme = match[2];
+                                            var currentStored = localStorage.getItem('appTheme');
+                                            if(cookieTheme && cookieTheme !== currentStored && (cookieTheme === 'light' || cookieTheme === 'dark' || cookieTheme === 'system')) {
+                                                console.log("Syncing theme from Cookie:", cookieTheme);
+                                                setAppTheme(cookieTheme);
+                                            }
+                                        }
+                                    }, 1000);
 
                                     if(themeToggle && themeMenu) {
                                         themeToggle.addEventListener('click', function(e) {

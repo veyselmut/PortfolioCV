@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using PortfolioCV.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System;
-using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,27 +12,76 @@ builder.Services.AddControllersWithViews()
     .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization();
 
+// Add API Controllers with JSON support
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-// Database
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// AUTO-FIX: Force ignore SSL certificate errors for specific hosting environments
-if (connectionString != null && !connectionString.Contains("TrustServerCertificate", StringComparison.OrdinalIgnoreCase))
-{
-    connectionString += ";TrustServerCertificate=True;Encrypt=False";
-}
-
+// Database - SQL Server
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? "Server=(localdb)\\mssqllocaldb;Database=PortfolioCV;Trusted_Connection=True;";
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Authentication
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+// JWT Configuration
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "YourSuperSecretKeyForJWTAuthenticationMin32Chars!";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "PortfolioCV";
+var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "PortfolioCVAdmin";
+
+// Authentication - Both Cookie (for existing MVC) and JWT (for new React API)
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    // Legacy cookie auth for MVC if still needed for frontend, 
+    // but admin is now handled by JWT in React.
+    options.Cookie.Name = "PortfolioCV.Auth";
+})
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.LoginPath = "/Admin/Login";
-        options.LogoutPath = "/Admin/Logout";
-        options.AccessDeniedPath = "/Admin/Login";
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+});
+
+// Authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    // Default policy for API controllers - requires JWT
+    options.AddPolicy("ApiPolicy", policy =>
+    {
+        policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
     });
+});
+
+// CORS for React Admin
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactAdmin", policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
+});
 
 builder.Services.AddSession();
 
@@ -46,10 +94,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseStaticFiles();
+
+// Bypass IIS Delete/Put blocking by allowing Method Override via Header X-HTTP-Method-Override
+app.UseHttpMethodOverride();
+
 app.UseRouting();
+
+// Enable CORS
+app.UseCors("ReactAdmin");
 
 // Localization
 var supportedCultures = new[] { "tr-TR", "en-US" };
@@ -64,6 +120,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
 
+// Map API routes (JWT auth)
+app.MapControllers();
+
+// Map MVC routes (Cookie auth)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -75,27 +135,46 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<AppDbContext>();
+        Console.WriteLine($"[STARTUP] Using Connection String: {connectionString}");
+        
+        // Initialize Database
         context.Database.EnsureCreated();
-
-        // Create default admin user if none exists
-        if (!context.Admins.Any())
+        Console.WriteLine($"[STARTUP] Database initialized.");
+        
+        // Seed Contacts if empty
+        if (!context.Contacts.Any())
         {
-            context.Admins.Add(new PortfolioCV.Models.Admin 
-            { 
-                Username = "admin", 
-                Password = PortfolioCV.Helpers.SecurityHelper.HashPassword("admin123"), 
-                Email = "admin@example.com" 
-            });
-            context.SaveChanges();
+            context.Contacts.AddRange(
+                new PortfolioCV.Models.Contact
+                {
+                    Name = "Ahmet Yılmaz",
+                    Email = "ahmet@example.com",
+                    Subject = "Proje Teklifi",
+                    Message = "Merhaba, web sitenizdeki çalışmalarınızı çok beğendim. Bir e-ticaret projesi için görüşmek isterim.",
+                    IsRead = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-2)
+                },
+                new PortfolioCV.Models.Contact
+                {
+                    Name = "Zeynep Demir",
+                    Email = "zeynep@company.com",
+                    Subject = "İş Görüşmesi",
+                    Message = "Frontend Developer pozisyonu için CV'nizi inceledik. Müsait olduğunuzda görüşmek isteriz.",
+                    IsRead = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-5)
+                }
+            );
+            Console.WriteLine("[STARTUP] Sample contacts seeded.");
         }
+
+        context.SaveChanges();
     }
     catch (Exception ex)
     {
-        Console.WriteLine("DB INIT ERROR: " + ex.Message);
-        try {
-            File.WriteAllText(Path.Combine(Environment.CurrentDirectory, "wwwroot", "startup_error.txt"), ex.ToString());
-        } catch { /* Ignore file write error */ }
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred creating the DB.");
     }
 }
 
 app.Run();
+// Rebuild trigger 1

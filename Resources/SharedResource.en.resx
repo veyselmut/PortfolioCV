@@ -50,6 +50,9 @@
   <data name="Language" xml:space="preserve"><value>Language</value></data>
   <data name="Logout" xml:space="preserve"><value>Logout</value></data>
   <data name="ViewPortfolio" xml:space="preserve"><value>View Website</value></data>
+  <data name="GetInTouch" xml:space="preserve"><value>Get In Touch</value></data>
+  <data name="ContactSubtitle" xml:space="preserve"><value>You can contact me for your projects</value></data>
+  <data name="SendMessage" xml:space="preserve"><value>Send Message</value></data>
   
   <!-- CV Page -->
   <data name="AboutMe" xml:space="preserve"><value>About Me</value></data>
@@ -91,15 +94,15 @@
   <data name="Order" xml:space="preserve"><value>Order</value></data>
   
   <!-- Form Labels -->
-  <data name="Name" xml:space="preserve"><value>Name / Title</value></data>
-  <data name="Title" xml:space="preserve"><value>Title / Role</value></data>
+  <data name="Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Title" xml:space="preserve"><value>Title</value></data>
   <data name="Subtitle" xml:space="preserve"><value>Subtitle</value></data>
   <data name="Description" xml:space="preserve"><value>Description</value></data>
   <data name="Date" xml:space="preserve"><value>Date</value></data>
   <data name="StartDate" xml:space="preserve"><value>Start Date</value></data>
   <data name="EndDate" xml:space="preserve"><value>End Date</value></data>
   <data name="Level" xml:space="preserve"><value>Level</value></data>
-  <data name="School" xml:space="preserve"><value>School / Institution</value></data>
+  <data name="School" xml:space="preserve"><value>School</value></data>
   <data name="Company" xml:space="preserve"><value>Company</value></data>
   <data name="Position" xml:space="preserve"><value>Position</value></data>
   <data name="Grade" xml:space="preserve"><value>Grade / GPA</value></data>
@@ -117,4 +120,58 @@
   <data name="Database" xml:space="preserve"><value>Database</value></data>
   <data name="DatabaseDesc" xml:space="preserve"><value>MSSQL and SQLite optimization.</value></data>
   <data name="Roles" xml:space="preserve"><value>Software Developer,Mechatronics Engineer,Freelancer</value></data>
+  <data name="ProfileSettings" xml:space="preserve"><value>Profile Settings</value></data>
+  <data name="IncomingMessages" xml:space="preserve"><value>Incoming Messages</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="New" xml:space="preserve"><value>New</value></data>
+  <data name="Read" xml:space="preserve"><value>Read</value></data>
+  <data name="NoRecords" xml:space="preserve"><value>No records found.</value></data>
+  <data name="ConfirmDelete" xml:space="preserve"><value>Are you sure you want to delete?</value></data>
+  <data name="EditWelcomeMessage" xml:space="preserve"><value>Edit Welcome Message</value></data>
+  <data name="FullName" xml:space="preserve"><value>Full Name</value></data>
+  <data name="Gender" xml:space="preserve"><value>Gender</value></data>
+  <data name="HasDrivingLicense" xml:space="preserve"><value>Driving License</value></data>
+  <data name="DrivingLicenseClass" xml:space="preserve"><value>License Class</value></data>
+  <data name="MilitaryStatus" xml:space="preserve"><value>Military Status</value></data>
+  <data name="ProfilePhoto" xml:space="preserve"><value>Profile Photo</value></data>
+  <data name="SelectFile" xml:space="preserve"><value>Select File</value></data>
+  <data name="Male" xml:space="preserve"><value>Male</value></data>
+  <data name="Female" xml:space="preserve"><value>Female</value></data>
+  <data name="Exempt" xml:space="preserve"><value>Exempt</value></data>
+  <data name="Deferred" xml:space="preserve"><value>Deferred</value></data>
+  <data name="Done" xml:space="preserve"><value>Done</value></data>
+  <data name="NotDone" xml:space="preserve"><value>Not Done</value></data>
+  <data name="Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="No" xml:space="preserve"><value>No</value></data>
+  <data name="EducationLevel" xml:space="preserve"><value>Education Level</value></data>
+  <data name="TeachingType" xml:space="preserve"><value>Teaching Type</value></data>
+  <data name="Faculty" xml:space="preserve"><value>Faculty</value></data>
+  <data name="Department" xml:space="preserve"><value>Department</value></data>
+  <data name="CurrentlyContinuing" xml:space="preserve"><value>Currently Continuing</value></data>
+  <data name="GradeSystem" xml:space="preserve"><value>Grade System</value></data>
+  <data name="Graduated" xml:space="preserve"><value>Graduated</value></data>
+  <data name="Continuing" xml:space="preserve"><value>Continuing</value></data>
+  <data name="StillContinuing" xml:space="preserve"><value>Still</value></data>
+  <data name="Issuer" xml:space="preserve"><value>Issuer</value></data>
+  <data name="Icon" xml:space="preserve"><value>Icon</value></data>
+  <data name="MessageDetails" xml:space="preserve"><value>Message Details</value></data>
+  <data name="Sender" xml:space="preserve"><value>Sender</value></data>
+  <data name="Message" xml:space="preserve"><value>Message</value></data>
+  <data name="GoBack" xml:space="preserve"><value>Go Back</value></data>
+  <data name="ProjectDetails" xml:space="preserve"><value>Project Details</value></data>
+  <data name="Tasks" xml:space="preserve"><value>Tasks</value></data>
+  <data name="TasksPlaceholder" xml:space="preserve"><value>Write one task per line...</value></data>
+  <data name="Username" xml:space="preserve"><value>Username</value></data>
+  <data name="Password" xml:space="preserve"><value>Password</value></data>
+  <data name="Login" xml:space="preserve"><value>Login</value></data>
+  <data name="AdminLoginMsg" xml:space="preserve"><value>Sign in to access admin panel.</value></data>
+  <data name="SystemAdministrator" xml:space="preserve"><value>System Administrator</value></data>
+  <data name="CurrentPassword" xml:space="preserve"><value>Current Password</value></data>
+  <data name="NewPassword" xml:space="preserve"><value>New Password</value></data>
+  <data name="ConfirmPassword" xml:space="preserve"><value>Confirm Password</value></data>
+  <data name="Optional" xml:space="preserve"><value>Optional</value></data>
+  <data name="SecureSave" xml:space="preserve"><value>Secure Save</value></data>
+  <data name="PasswordHint" xml:space="preserve"><value>Leave blank if you don't want to change your password.</value></data>
+  <data name="QuickActions" xml:space="preserve"><value>Quick Actions</value></data>
 </root>

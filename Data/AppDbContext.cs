@@ -25,19 +25,17 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Seed default admin
-        modelBuilder.Entity<Admin>().HasData(
-            new Admin { Id = 1, Username = "admin", Password = "admin123", Email = "admin@portfolio.com" }
-        );
+        // Seed data (Admin seeding removed to allow manual /Admin/Initialize flow)
+
 
         // Seed default welcome message
         modelBuilder.Entity<WelcomeMessage>().HasData(
-            new WelcomeMessage { Id = 1, Title = "Merhaba, Ben Veysel Mut!", Subtitle = "Mekatronik Mühendisi & Yazılım Geliştirici", Description = ".NET Teknolojileri ve Modern Web Çözümleri üzerine uzmanlaşmış dijital portfolyoma hoş geldiniz." }
+            new WelcomeMessage { Id = 1, Title = "Portföyümü Keşfedin:", Subtitle = "Mekatronik Mühendisi & Full-Stack Geliştirici & Freelancer", Description = ".NET Teknolojileri ve Modern Web Çözümleri üzerine uzmanlaşmış dijital portfolyoma hoş geldiniz." }
         );
 
         // Seed default social media
         modelBuilder.Entity<SocialMedia>().HasData(
-            new SocialMedia { Id = 1, LinkedIn = "https://linkedin.com", Github = "https://github.com" }
+            new SocialMedia { Id = 1, LinkedIn = "https://linkedin.com/in/veyselmut", Github = "https://github.com/veyselmut", Twitter = "https://x.com/veyselmut", Youtube = "https://youtube.com/veyselmut", Instagram = "https://instagram.com/veyselmut" }
         );
         
         // Seed default personal info
@@ -46,10 +44,10 @@ public class AppDbContext : DbContext
             { 
                 Id = 1, 
                 FullName = "Veysel Mut", 
-                Title = "Mekatronik Mühendisi / Yazılım Geliştirici", 
+                Title = "Freelancer", 
                 Email = "veysel.mut@hotmail.com", 
-                Phone = "+90 (531) 229 74 05", 
-                Address = "Kavakpınar Mah. Zeytinli Cad. No:35/2 Pendik / İstanbul", 
+                Phone = "+90 (555) 111 11 11", 
+                Address = "Pendik / İstanbul", 
                 Gender = "Erkek", 
                 MilitaryStatus = "Yapıldı",
                 HasDrivingLicense = true,
@@ -60,20 +58,20 @@ public class AppDbContext : DbContext
 
         // Seed Educations
         modelBuilder.Entity<Education>().HasData(
-            new Education { Id = 1, EducationType = "Lisans", School = "Karabük Üniversitesi", Department = "Mekatronik Mühendisliği", StartDate = new DateTime(2012, 9, 1), EndDate = new DateTime(2017, 10, 1), IsContinuing = false, GradeSystem = "4", Grade = 2.91, Order = 1 },
-            new Education { Id = 2, EducationType = "Ön Lisans", School = "Anadolu Üniversitesi", Department = "Bilgisayar Programcılığı", StartDate = new DateTime(2022, 10, 1), IsContinuing = true, Order = 2 },
-            new Education { Id = 3, EducationType = "Ön Lisans", School = "Atatürk Üniversitesi", Department = "İş Sağlığı ve Güvenliği", StartDate = new DateTime(2018, 8, 1), IsContinuing = true, Order = 3 },
+            new Education { Id = 1, EducationType = "Lisans", School = "Karabük Üniversitesi", Department = "Mekatronik Mühendisliği",Faculty="Teknoloji Fakültesi", StartDate = new DateTime(2012, 9, 1), EndDate = new DateTime(2017, 10, 1), IsContinuing = false, GradeSystem = "4", Grade = 2.91, Order = 1 },
+            new Education { Id = 2, EducationType = "Ön Lisans", School = "Anadolu Üniversitesi", Department = "Bilgisayar Programcılığı",Faculty="Açıköğretim Fakültesi", StartDate = new DateTime(2022, 10, 1),EndDate = new DateTime(2025, 09, 1), IsContinuing = false, GradeSystem = "4", Grade = 2.67, Order = 2 },
+            new Education { Id = 3, EducationType = "Ön Lisans", School = "Atatürk Üniversitesi", Department = "İş Sağlığı ve Güvenliği",Faculty="Açıköğretim Fakültesi", StartDate = new DateTime(2018, 8, 1), IsContinuing = true, Order = 3 },
             new Education { Id = 4, EducationType = "Lise", School = "Faruk Nafiz Çamlıbel Anadolu İmam Hatip Lisesi", StartDate = new DateTime(2007, 8, 1), EndDate = new DateTime(2011, 6, 1), IsContinuing = false, Order = 4 },
             new Education { Id = 5, EducationType = "İlköğretim", School = "Darüşşafaka Eğitim Kurumları", StartDate = new DateTime(2001, 1, 1), EndDate = new DateTime(2007, 1, 1), IsContinuing = false, Order = 5 }
         );
 
         // Seed Experiences
         modelBuilder.Entity<Experience>().HasData(
-            new Experience { Id = 1, Position = "Proje Geliştirici", CompanyName = "Bireysel", Industry = "Yazılım", StartDate = new DateTime(2021, 7, 1), IsCurrentlyWorking = true, Order = 1, Address = "İstanbul" },
-            new Experience { Id = 2, Position = "Freelance Geliştirici", CompanyName = "PYS Geliştirmesi", Industry = "Yazılım", StartDate = new DateTime(2022, 12, 1), EndDate = new DateTime(2023, 4, 1), IsCurrentlyWorking = false, Order = 2 },
-            new Experience { Id = 3, Position = "Web Geliştirici", CompanyName = "E-Ticaret Sitesi", Industry = "E-Ticaret", StartDate = new DateTime(2022, 4, 1), EndDate = new DateTime(2023, 1, 1), IsCurrentlyWorking = false, Order = 3 },
-            new Experience { Id = 4, Position = "Stajyer Mühendis", CompanyName = "Tork Mühendislik Asansör", Industry = "Asansör", StartDate = new DateTime(2017, 7, 1), EndDate = new DateTime(2017, 8, 1), IsCurrentlyWorking = false, Order = 4 },
-            new Experience { Id = 5, Position = "Stajyer Mühendis", CompanyName = "Geta Grup Asansör", Industry = "Asansör", StartDate = new DateTime(2017, 6, 1), EndDate = new DateTime(2017, 7, 1), IsCurrentlyWorking = false, Order = 5 }
+            new Experience { Id = 1, Position = "Proje Geliştirici", CompanyName = "Bireysel", Industry = "Freelance",Department="Freelance",Address="İstanbul", StartDate = new DateTime(2021, 7, 1), IsCurrentlyWorking = true, Order = 1},
+            new Experience { Id = 2, Position = "Freelance Geliştirici", CompanyName = "PYS Geliştirmesi", Industry = "Freelance",Department="Freelance",Address="İstanbul", StartDate = new DateTime(2022, 12, 1), EndDate = new DateTime(2023, 4, 1), IsCurrentlyWorking = false, Order = 2 },
+            new Experience { Id = 3, Position = "Web Geliştirici", CompanyName = "E-Ticaret Sitesi", Industry = "Freelance",Department="Freelance",Address="İstanbul", StartDate = new DateTime(2022, 4, 1), EndDate = new DateTime(2023, 1, 1), IsCurrentlyWorking = false, Order = 3 },
+            new Experience { Id = 4, Position = "Stajyer Mühendis", CompanyName = "Tork Mühendislik Asansör", Industry = "Asansör",Department="Mühendislik",Address="Kocaeli", StartDate = new DateTime(2017, 7, 1), EndDate = new DateTime(2017, 8, 1), IsCurrentlyWorking = false, Order = 5 },
+            new Experience { Id = 5, Position = "Stajyer Mühendis", CompanyName = "Geta Grup Asansör", Industry = "Asansör",Department="AR-GE",Address="İstanbul", StartDate = new DateTime(2017, 6, 1), EndDate = new DateTime(2017, 7, 1), IsCurrentlyWorking = false, Order = 4 }
         );
 
         // Seed Skills
@@ -88,7 +86,7 @@ public class AppDbContext : DbContext
         // Seed Languages
         modelBuilder.Entity<Language>().HasData(
             new Language { Id = 1, Name = "İngilizce", Level = "B2", Order = 1 },
-            new Language { Id = 2, Name = "Türkçe", Level = "C2", Order = 2 }
+            new Language { Id = 2, Name = "Fransızca", Level = "A1", Order = 2 }
         );
 
         // Seed Certificates
@@ -106,7 +104,7 @@ public class AppDbContext : DbContext
                 Description = "ASP.NET Core 8.0 MVC ile geliştirilmiş modern portföy ve CV sitesi",
                 Tasks = "Frontend tasarım\nBackend geliştirme\nVeritabanı yönetimi\nAdmin panel entegrasyonu",
                 Date = new DateTime(2023, 7, 1), 
-                Url = "https://github.com", 
+                Url = "https://github.com/veyselmut/PortfolioCV", 
                 Order = 1 
             },
             new Project { 

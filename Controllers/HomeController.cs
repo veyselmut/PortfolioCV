@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PortfolioCV.Data;
 using PortfolioCV.Models;
 
-using System.IO;
+
 
 namespace PortfolioCV.Controllers;
 
@@ -18,44 +18,21 @@ public class HomeController : Controller
         _configuration = configuration;
     }
 
+    [Route("")]
+    [Route("Home")]
+    [Route("Home/Index")]
     public async Task<IActionResult> Index()
     {
-        try
-        {
-            var errFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "startup_error.txt");
-            if (System.IO.File.Exists(errFile))
-            {
-                ViewBag.StartupError = System.IO.File.ReadAllText(errFile);
-            }
-            
-            var welcomeMessage = await _context.WelcomeMessages.FirstOrDefaultAsync();
-            ViewBag.Services = await _context.Services.OrderBy(s => s.Order).ToListAsync();
-            return View(welcomeMessage);
-        }
-        catch (Exception ex)
-        {
-            var conn = _configuration.GetConnectionString("DefaultConnection");
-            // Mask password
-            if(!string.IsNullOrEmpty(conn)) {
-                var parts = conn.Split(';');
-                for(int i=0;i<parts.Length;i++) {
-                    if(parts[i].Trim().StartsWith("Password", StringComparison.OrdinalIgnoreCase) || parts[i].Trim().StartsWith("Pwd", StringComparison.OrdinalIgnoreCase)) {
-                        parts[i] = "Password=***";
-                    }
-                }
-                conn = string.Join(";", parts);
-            }
-            
-            ViewBag.DbError = ex.Message;
-            ViewBag.FullEx = ex.ToString();
-            ViewBag.ConnString = conn;
-            return View((PortfolioCV.Models.WelcomeMessage)null);
-        }
+        var welcomeMessage = await _context.WelcomeMessages.FirstOrDefaultAsync();
+        ViewBag.Services = await _context.Services.OrderBy(s => s.Order).ToListAsync();
+        return View(welcomeMessage);
     }
 
+    [Route("resume")]
     public async Task<IActionResult> CV()
     {
         ViewBag.PersonalInfo = await _context.PersonalInfos.FirstOrDefaultAsync();
+
         ViewBag.Educations = await _context.Educations.OrderBy(e => e.Order).ToListAsync();
         ViewBag.Experiences = await _context.Experiences.OrderBy(e => e.Order).ToListAsync();
         ViewBag.Skills = await _context.Skills.OrderBy(s => s.Order).ToListAsync();
@@ -66,11 +43,13 @@ public class HomeController : Controller
         return View();
     }
 
+    [Route("contact")]
     public IActionResult Contact()
     {
         return View();
     }
 
+    [Route("contact")]
     [HttpPost]
     public async Task<IActionResult> Contact(Models.Contact contact)
     {

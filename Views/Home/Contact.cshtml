@@ -1,5 +1,6 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer<PortfolioCV.SharedResource> SharedLocalizer
 @{
-    ViewData["Title"] = "İletişim";
+    ViewData["Title"] = SharedLocalizer["Contact"];
 }
 
 <div class="container-fluid p-30">
@@ -9,15 +10,15 @@
     <!-- Contact Header -->
     <div class="row mb-30">
         <div class="col-md-12 text-center">
-            <h2 class="contact-main-title">İletişime Geçin</h2>
-            <p class="contact-subtitle">Projeleriniz için benimle iletişime geçebilirsiniz</p>
+            <h2 class="contact-main-title">@SharedLocalizer["GetInTouch"]</h2>
+            <p class="contact-subtitle">@SharedLocalizer["ContactSubtitle"]</p>
         </div>
     </div>
 
     <div class="row">
-        <!-- Contact Form -->
-        <div class="col-md-8 mb-30">
-            <div class="contact-form-wrapper">
+        <!-- Contact Form (Full Width) -->
+        <div class="col-md-12 mb-30">
+            <div class="contact-form-wrapper" style="max-width: 900px; margin: 0 auto;">
                 
                 @if (TempData["Success"] != null)
                 {
@@ -30,69 +31,32 @@
                     <div class="row">
                         <div class="col-md-6 mb-30">
                             <div class="form-group-modern">
-                                <input type="text" name="Name" placeholder="Adınız Soyadınız" required>
+                                <input type="text" name="Name" placeholder="@SharedLocalizer["FullName"]" required>
                             </div>
                         </div>
                         <div class="col-md-6 mb-30">
                             <div class="form-group-modern">
-                                <input type="email" name="Email" placeholder="Email Adresiniz" required>
+                                <input type="email" name="Email" placeholder="@SharedLocalizer["Email"]" required>
                             </div>
                         </div>
                         <div class="col-md-12 mb-30">
                             <div class="form-group-modern">
-                                <input type="text" name="Subject" placeholder="Konu" required>
+                                <input type="text" name="Subject" placeholder="@SharedLocalizer["Subject"]" required>
                             </div>
                         </div>
                         <div class="col-md-12 mb-30">
                             <div class="form-group-modern">
-                                <textarea name="Message" rows="6" placeholder="Mesajınız" required></textarea>
+                                <textarea name="Message" rows="6" placeholder="@SharedLocalizer["Message"]" required></textarea>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
                             <button type="submit" class="btn-art btn-art-large">
-                                <span>Mesaj Gönder</span>
+                                <span>@SharedLocalizer["SendMessage"]</span>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
-
-        <!-- Contact Info Cards -->
-        <div class="col-md-4 mb-30">
-            <div class="contact-info-cards">
-                
-                <div class="contact-info-card">
-                    <div class="contact-info-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="contact-info-content">
-                        <h6>Adres</h6>
-                        <p>Pendik / İstanbul<br>Türkiye</p>
-                    </div>
-                </div>
-
-                <div class="contact-info-card">
-                    <div class="contact-info-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div class="contact-info-content">
-                        <h6>Email</h6>
-                        <p><a href="mailto:veysel.mut@hotmail.com">veysel.mut@hotmail.com</a></p>
-                    </div>
-                </div>
-
-                <div class="contact-info-card">
-                    <div class="contact-info-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <div class="contact-info-content">
-                        <h6>Telefon</h6>
-                        <p><a href="tel:+905312297405">+90 531 229 74 05</a></p>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
