@@ -1,0 +1,29 @@
+  Geri yüklenecek projeler belirleniyor...
+  Geri yükleme için tüm projeler güncel.
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Services\CvService.cs(29,43): error CS1061: 'AppDbContext' bir 'CvReferences' tanımı içermiyor ve 'AppDbContext' türünde bir ilk bağımsız değişken kabul eden hiçbir erişilebilir 'CvReferences' genişletme yöntemi bulunamadı (bir kullanma yönergeniz veya derleme başvurunuz eksik olabilir mi?) [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(73,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(82,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(101,76): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(119,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(137,99): error CS0117: 'Colors.Grey' bir 'Dark' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(150,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(173,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(184,95): error CS0117: 'Colors.Blue' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Program.cs(193,38): warning EF1002: Method 'ExecuteSqlRaw' inserts interpolated strings directly into the SQL, without any protection against SQL injection. Consider using 'ExecuteSql' instead, which protects against SQL injection, or make sure that the value is sanitized and suppress the warning. [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+
+Oluşturma BAŞARISIZ OLDU.
+
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Program.cs(193,38): warning EF1002: Method 'ExecuteSqlRaw' inserts interpolated strings directly into the SQL, without any protection against SQL injection. Consider using 'ExecuteSql' instead, which protects against SQL injection, or make sure that the value is sanitized and suppress the warning. [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Services\CvService.cs(29,43): error CS1061: 'AppDbContext' bir 'CvReferences' tanımı içermiyor ve 'AppDbContext' türünde bir ilk bağımsız değişken kabul eden hiçbir erişilebilir 'CvReferences' genişletme yöntemi bulunamadı (bir kullanma yönergeniz veya derleme başvurunuz eksik olabilir mi?) [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(73,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(82,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(101,76): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(119,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(137,99): error CS0117: 'Colors.Grey' bir 'Dark' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(150,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(173,75): error CS0117: 'Colors.Grey' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\Documents\CvDocument.cs(184,95): error CS0117: 'Colors.Blue' bir 'Light' tanımı içermiyor [C:\Users\veyse\OneDrive\Desktop\Workings\trial3\PortfolioCV\PortfolioCV.csproj]
+    1 Uyarı
+    9 Hata
+
+Geçen Süre 00:00:02.07

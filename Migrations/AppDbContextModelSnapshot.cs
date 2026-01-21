@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PortfolioCV.Data;
 
@@ -15,25 +16,31 @@ namespace PortfolioCV.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("PortfolioCV.Models.Admin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -44,28 +51,26 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Issuer")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -78,8 +83,7 @@ namespace PortfolioCV.Migrations
                             Date = new DateTime(2020, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Issuer = "Udemy",
                             Name = "Asp.Net Core 8.0 ile Sıfırdan İleri Seviye Web Geliştirme",
-                            Order = 1,
-                            Slug = ""
+                            Order = 1
                         },
                         new
                         {
@@ -87,8 +91,7 @@ namespace PortfolioCV.Migrations
                             Date = new DateTime(2017, 11, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Issuer = "Udemy",
                             Name = "Komple Uygulamalı Web Geliştirme Eğitimi",
-                            Order = 2,
-                            Slug = ""
+                            Order = 2
                         },
                         new
                         {
@@ -96,8 +99,7 @@ namespace PortfolioCV.Migrations
                             Date = new DateTime(2024, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Issuer = "Udemy",
                             Name = "Python ile Sıfırdan İleri Seviye Programlama",
-                            Order = 3,
-                            Slug = ""
+                            Order = 3
                         });
                 });
 
@@ -105,29 +107,31 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsRead")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Subject")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -138,34 +142,32 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Company")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -180,8 +182,7 @@ namespace PortfolioCV.Migrations
                             Name = "Nebi Erdal Akkabak",
                             Order = 1,
                             Phone = "+90 (537) 363 18 15",
-                            Position = "Bireysel Portföy Müdürü",
-                            Slug = ""
+                            Position = "Bireysel Portföy Müdürü"
                         },
                         new
                         {
@@ -191,8 +192,7 @@ namespace PortfolioCV.Migrations
                             Name = "Fatih Yılmaz",
                             Order = 2,
                             Phone = "+90 (539) 947 47 59",
-                            Position = "Kalıphane Mühendisi",
-                            Slug = ""
+                            Position = "Kalıphane Mühendisi"
                         },
                         new
                         {
@@ -202,8 +202,7 @@ namespace PortfolioCV.Migrations
                             Name = "İsa Demir",
                             Order = 3,
                             Phone = "+90 (535) 027 29 47",
-                            Position = "Ürün Mimarı",
-                            Slug = ""
+                            Position = "Ürün Mimarı"
                         });
                 });
 
@@ -211,46 +210,44 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Department")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EducationType")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Faculty")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("Grade")
-                        .HasColumnType("REAL");
+                        .HasColumnType("float");
 
                     b.Property<string>("GradeSystem")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsContinuing")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("School")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TeachingType")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -269,7 +266,6 @@ namespace PortfolioCV.Migrations
                             IsContinuing = false,
                             Order = 1,
                             School = "Karabük Üniversitesi",
-                            Slug = "",
                             StartDate = new DateTime(2012, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -284,7 +280,6 @@ namespace PortfolioCV.Migrations
                             IsContinuing = false,
                             Order = 2,
                             School = "Anadolu Üniversitesi",
-                            Slug = "",
                             StartDate = new DateTime(2022, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -296,7 +291,6 @@ namespace PortfolioCV.Migrations
                             IsContinuing = true,
                             Order = 3,
                             School = "Atatürk Üniversitesi",
-                            Slug = "",
                             StartDate = new DateTime(2018, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -307,7 +301,6 @@ namespace PortfolioCV.Migrations
                             IsContinuing = false,
                             Order = 4,
                             School = "Faruk Nafiz Çamlıbel Anadolu İmam Hatip Lisesi",
-                            Slug = "",
                             StartDate = new DateTime(2007, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -318,7 +311,6 @@ namespace PortfolioCV.Migrations
                             IsContinuing = false,
                             Order = 5,
                             School = "Darüşşafaka Eğitim Kurumları",
-                            Slug = "",
                             StartDate = new DateTime(2001, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -327,40 +319,38 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Department")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Industry")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsCurrentlyWorking")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Position")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -377,7 +367,6 @@ namespace PortfolioCV.Migrations
                             IsCurrentlyWorking = true,
                             Order = 1,
                             Position = "Proje Geliştirici",
-                            Slug = "",
                             StartDate = new DateTime(2021, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -391,7 +380,6 @@ namespace PortfolioCV.Migrations
                             IsCurrentlyWorking = false,
                             Order = 2,
                             Position = "Freelance Geliştirici",
-                            Slug = "",
                             StartDate = new DateTime(2022, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -405,7 +393,6 @@ namespace PortfolioCV.Migrations
                             IsCurrentlyWorking = false,
                             Order = 3,
                             Position = "Web Geliştirici",
-                            Slug = "",
                             StartDate = new DateTime(2022, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -419,7 +406,6 @@ namespace PortfolioCV.Migrations
                             IsCurrentlyWorking = false,
                             Order = 5,
                             Position = "Stajyer Mühendis",
-                            Slug = "",
                             StartDate = new DateTime(2017, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -433,7 +419,6 @@ namespace PortfolioCV.Migrations
                             IsCurrentlyWorking = false,
                             Order = 4,
                             Position = "Stajyer Mühendis",
-                            Slug = "",
                             StartDate = new DateTime(2017, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -442,22 +427,20 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Level")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -469,16 +452,14 @@ namespace PortfolioCV.Migrations
                             Id = 1,
                             Level = "B2",
                             Name = "İngilizce",
-                            Order = 1,
-                            Slug = ""
+                            Order = 1
                         },
                         new
                         {
                             Id = 2,
                             Level = "A1",
                             Name = "Fransızca",
-                            Order = 2,
-                            Slug = ""
+                            Order = 2
                         });
                 });
 
@@ -486,48 +467,50 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("About")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AvatarPath")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DrivingLicenseClass")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasDrivingLicense")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<string>("MilitaryStatus")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -545,8 +528,8 @@ namespace PortfolioCV.Migrations
                             Gender = "Erkek",
                             HasDrivingLicense = true,
                             MilitaryStatus = "Yapıldı",
-                            Phone = "+90 (531) 229 74 05",
-                            Title = "Mekatronik Mühendisi / Yazılım Geliştirici"
+                            Phone = "+90 (555) 111 11 11",
+                            Title = "Freelancer"
                         });
                 });
 
@@ -554,30 +537,28 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("int");
 
                     b.Property<string>("Tasks")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -591,7 +572,6 @@ namespace PortfolioCV.Migrations
                             Description = "ASP.NET Core 8.0 MVC ile geliştirilmiş modern portföy ve CV sitesi",
                             Name = ".NET Core Tabanlı Bireysel Portföy Sitesi",
                             Order = 1,
-                            Slug = "",
                             Tasks = "Frontend tasarım\nBackend geliştirme\nVeritabanı yönetimi\nAdmin panel entegrasyonu",
                             Url = "https://github.com/veyselmut/PortfolioCV"
                         },
@@ -602,7 +582,6 @@ namespace PortfolioCV.Migrations
                             Description = "Kapsamlı e-ticaret platformu",
                             Name = "ASP.NET 6 Tabanlı E-Ticaret Sitesi",
                             Order = 2,
-                            Slug = "",
                             Tasks = "Ürün yönetimi\nSepet sistemi\nÖdeme entegrasyonu"
                         },
                         new
@@ -612,7 +591,6 @@ namespace PortfolioCV.Migrations
                             Description = "Kurumsal personel takip ve yönetim sistemi",
                             Name = "Personel Yönetim Sistemi (PYS)",
                             Order = 3,
-                            Slug = "",
                             Tasks = "Personel kayıt\nİzin yönetimi\nRaporlama"
                         });
                 });
@@ -621,26 +599,24 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Icon")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -651,21 +627,19 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Level")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -677,40 +651,35 @@ namespace PortfolioCV.Migrations
                             Id = 1,
                             Level = 85,
                             Name = "C# / ASP.NET Core",
-                            Order = 1,
-                            Slug = ""
+                            Order = 1
                         },
                         new
                         {
                             Id = 2,
                             Level = 80,
                             Name = "MS SQL Server",
-                            Order = 2,
-                            Slug = ""
+                            Order = 2
                         },
                         new
                         {
                             Id = 3,
                             Level = 85,
                             Name = "Entity Framework Core",
-                            Order = 3,
-                            Slug = ""
+                            Order = 3
                         },
                         new
                         {
                             Id = 4,
                             Level = 75,
                             Name = "HTML / CSS / JS",
-                            Order = 4,
-                            Slug = ""
+                            Order = 4
                         },
                         new
                         {
                             Id = 5,
                             Level = 70,
                             Name = "Git / Docker",
-                            Order = 5,
-                            Slug = ""
+                            Order = 5
                         });
                 });
 
@@ -718,22 +687,24 @@ namespace PortfolioCV.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Github")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Instagram")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LinkedIn")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Twitter")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Youtube")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -751,23 +722,53 @@ namespace PortfolioCV.Migrations
                         });
                 });
 
+            modelBuilder.Entity("PortfolioCV.Models.Visitor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserAgent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("VisitDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Visitors");
+                });
+
             modelBuilder.Entity("PortfolioCV.Models.WelcomeMessage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Subtitle")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -778,8 +779,8 @@ namespace PortfolioCV.Migrations
                         {
                             Id = 1,
                             Description = ".NET Teknolojileri ve Modern Web Çözümleri üzerine uzmanlaşmış dijital portfolyoma hoş geldiniz.",
-                            Subtitle = "Mekatronik Mühendisi & Yazılım Geliştirici",
-                            Title = "Merhaba, Ben Veysel Mut!"
+                            Subtitle = "Mekatronik Mühendisi & Full-Stack Geliştirici & Freelancer",
+                            Title = "Portföyümü Keşfedin:"
                         });
                 });
 #pragma warning restore 612, 618

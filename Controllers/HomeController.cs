@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PortfolioCV.Data;
 using PortfolioCV.Models;
+using PortfolioCV.Services;
 
 
 
@@ -11,11 +12,13 @@ public class HomeController : Controller
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _configuration;
+    private readonly IEmailService _emailService;
 
-    public HomeController(AppDbContext context, IConfiguration configuration)
+    public HomeController(AppDbContext context, IConfiguration configuration, IEmailService emailService)
     {
         _context = context;
         _configuration = configuration;
+        _emailService = emailService;
     }
 
     [Route("")]
@@ -58,6 +61,22 @@ public class HomeController : Controller
             contact.CreatedAt = DateTime.Now;
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
+
+            // Email Notification
+            try 
+            {
+                var adminEmail = _configuration["EmailSettings:SenderEmail"];
+                if (!string.IsNullOrEmpty(adminEmail))
+                {
+                    await _emailService.SendEmailAsync(
+                        adminEmail, 
+                        $"[Portfolio] Yeni Mesaj: {contact.Subject}", 
+                        $"<h3>Gönderen: {contact.Name} ({contact.Email})</h3><p>{contact.Message}</p>"
+                    );
+                }
+            }
+            catch(Exception ex) { Console.WriteLine($"Email send failed: {ex.Message}"); }
+
             TempData["Success"] = "Mesajınız başarıyla gönderildi!";
             return RedirectToAction("Contact");
         }

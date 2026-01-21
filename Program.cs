@@ -5,9 +5,29 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using PortfolioCV.Services;
+using PortfolioCV.Models;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<CvService>();
+
+// Response Compression for better performance
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProvider>();
+    options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.GzipCompressionProvider>();
+});
+
+// Memory Cache for performance
+builder.Services.AddMemoryCache();
+
 builder.Services.AddControllersWithViews()
     .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
     .AddDataAnnotationsLocalization();
@@ -69,14 +89,16 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-// CORS for React Admin
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
-
+// CORS for React Admin - HARDCODED for production reliability
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactAdmin", policy =>
     {
-        policy.WithOrigins(allowedOrigins)
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "http://localhost:5174",
+            "https://dashboard.veyselmut.com.tr"
+        )
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials();
@@ -95,9 +117,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+app.UseResponseCompression(); // Enable compression
 app.UseStaticFiles();
 
-app.UseStaticFiles();
+// Visitor Analytics Tracker - Public Page Visits
+app.UseMiddleware<PortfolioCV.Middleware.VisitorTrackerMiddleware>();
 
 // Bypass IIS Delete/Put blocking by allowing Method Override via Header X-HTTP-Method-Override
 app.UseHttpMethodOverride();
@@ -123,6 +147,10 @@ app.UseSession();
 // Map API routes (JWT auth)
 app.MapControllers();
 
+
+// Admin Panel SPA Fallback removed - admin panel is on separate domain (dashboard.veyselmut.com.tr)
+
+
 // Map MVC routes (Cookie auth)
 app.MapControllerRoute(
     name: "default",
@@ -140,32 +168,33 @@ using (var scope = app.Services.CreateScope())
         // Initialize Database
         context.Database.EnsureCreated();
         Console.WriteLine($"[STARTUP] Database initialized.");
-        
-        // Seed Contacts if empty
-        if (!context.Contacts.Any())
+
+        // Manual Migration for Visitors Table (Bypassing EF Migration issues)
+        try 
         {
-            context.Contacts.AddRange(
-                new PortfolioCV.Models.Contact
-                {
-                    Name = "Ahmet Yılmaz",
-                    Email = "ahmet@example.com",
-                    Subject = "Proje Teklifi",
-                    Message = "Merhaba, web sitenizdeki çalışmalarınızı çok beğendim. Bir e-ticaret projesi için görüşmek isterim.",
-                    IsRead = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-2)
-                },
-                new PortfolioCV.Models.Contact
-                {
-                    Name = "Zeynep Demir",
-                    Email = "zeynep@company.com",
-                    Subject = "İş Görüşmesi",
-                    Message = "Frontend Developer pozisyonu için CV'nizi inceledik. Müsait olduğunuzda görüşmek isteriz.",
-                    IsRead = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-5)
-                }
-            );
-            Console.WriteLine("[STARTUP] Sample contacts seeded.");
+            context.Database.ExecuteSqlRaw(@"
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Visitors' AND xtype='U')
+                CREATE TABLE Visitors (
+                    Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+                    IpAddress NVARCHAR(MAX) NOT NULL,
+                    UserAgent NVARCHAR(MAX) NOT NULL,
+                    Path NVARCHAR(MAX) NOT NULL,
+                    VisitDate DATETIME2 NOT NULL
+                )
+            ");
+            Console.WriteLine("[STARTUP] Visitors table checked/created.");
+        } 
+        catch (Exception ex) 
+        { 
+            Console.WriteLine($"[STARTUP] Visitor Table error: {ex.Message}"); 
         }
+
+
+        // Visitor seeding removed - production uses real data only
+        Console.WriteLine("[STARTUP] Visitors table ready.");
+        
+        // Seed Contacts block removed as per user request
+        // if (!context.Contacts.Any()) { ... }
 
         context.SaveChanges();
     }

@@ -1,110 +1,388 @@
-# 🎨 PortfolioCV - Dynamic Portfolio & CV Platform
+# 🌟 PortfolioCV - Modern Portfolio & CV Management System
 
-A modern, full-featured portfolio management system built with extensive .NET 8 and React integration.
-It features a public-facing dynamic portfolio site and a powerful, separate Request-based Admin Panel built with **Refine**.
-
-## 🏗 Architecture
-
-*   **Public Frontend:** ASP.NET Core MVC (Dynamic Content, SEO Optimized)
-*   **Admin Panel:** React 18, Vite, Refine Framework, Ant Design
-*   **Backend API:** ASP.NET Core Web API (JWT Authentication)
-*   **Database:** MSSQL (Entity Framework Core)
-
-## ✨ Key Features
-
-### 🔐 Admin Panel (React)
-*   **Smart Initialization:** Auto-detects fresh installations and redirects to a setup wizard to create the first admin account.
-*   **Modern UI:** Built with Ant Design & Refine.
-*   **Secure Auth:** JWT-based authentication with secure cookie handling.
-*   **Advanced CRUD:** Smart tables with sorting, filtering, and searching.
-*   **Dark/Light Mode:** Full theme support syncing across subdomains.
-*   **Multilingual:** TR/EN support with persistent preferences.
-*   **IIS Compatible:** Custom **Method Override** support to bypass WebDAV/Firewall restrictions on `PUT/DELETE` requests.
-
-### 🌐 Public Site (MVC)
-*   **Dynamic Sections:** All content (Skills, Projects, Experience) is manageable via Admin.
-*   **Responsive Design:** Mobile-first approach.
-*   **Fast Performance:** Optimized assets and database queries.
-*   **Contact Form:** Integrated messaging system directly to Admin Panel.
+[🇹🇷 Türkçe](#tr) | [🇬🇧 English](#en)
 
 ---
 
-## 🚀 Getting Started
+<a name="tr"></a>
+## 🇹🇷 Türkçe
 
-### Prerequisites
-*   .NET 8.0 SDK
-*   Node.js (v18+)
-*   SQL Server
+### 📋 Proje Hakkında
 
-### 1️⃣ Backend Setup (API & Public Site)
-1.  Clone the repository.
-2.  Update `appsettings.json` with your SQL Connection String.
-3.  Apply Migrations:
-    ```bash
-    dotnet ef database update
-    ```
-    *This will create the database schema. No initial data is seeded automatically for security reasons.*
+PortfolioCV, modern ve profesyonel bir portföy & CV yönetim sistemidir. Kişisel bilgilerinizi, eğitim geçmişinizi, iş deneyimlerinizi, projelerinizi ve becerilerinizi tek bir platformda yönetebilir ve ziyaretçilerinizle paylaşabilirsiniz.
 
-4.  Run the application:
-    ```bash
-    dotnet run
-    ```
-    (Runs on `https://localhost:7150` by default).
+### ✨ Özellikler
 
-### 2️⃣ Admin Panel Setup
-1.  Navigate to the admin folder:
-    ```bash
-    cd admin-panel
-    ```
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-3.  Configure Environment:
-    Create `.env` file:
-    ```env
-    VITE_API_URL=https://localhost:7150
-    ```
-4.  Start Development Server:
-    ```bash
-    npm start
-    ```
+#### 🎨 Frontend (Public Site)
+- 🌐 Çok dilli destek (Türkçe/İngilizce)
+- 🌓 Dark/Light mode
+- 📱 Tam responsive tasarım
+- ⚡ Yüksek performans
+- 🎯 SEO optimize
+- 📊 Ziyaretçi takibi
+- 📧 İletişim formu
+- 📄 PDF CV indirme
 
-### 3️⃣ First Run & Initialization
-When you launch the Admin Panel for the first time:
-1.  The system checks if any admin user exists in the database.
-2.  If the database is empty (fresh install), you will be automatically redirected to the **/initialize** page.
-3.  Fill in the form to create your **Master Admin** account.
-4.  Once created, you will be redirected to the Login page to sign in with your new credentials.
+#### 🔧 Admin Panel
+- 🔐 JWT tabanlı güvenli authentication
+- 📊 Gelişmiş dashboard & analytics
+- 🌍 IP bazlı ülke tespiti (bayrak gösterimi)
+- 📈 Ziyaretçi istatistikleri
+- 🎨 Modern UI/UX (Ant Design)
+- 🌓 Dark/Light mode
+- 📱 Responsive design
+- 🔄 Real-time veri yönetimi
+
+#### 📦 Yönetilebilir İçerikler
+- 👤 Kişisel Bilgiler
+- 🎓 Eğitim Geçmişi
+- 💼 İş Deneyimleri
+- 🛠️ Yetenekler
+- 🚀 Projeler
+- 🏆 Sertifikalar
+- 🌐 Diller
+- 👥 Referanslar
+- 🔗 Sosyal Medya
+- ⚙️ Hizmetler
+- 💬 Mesajlar
+
+### 🛠️ Teknoloji Stack'i
+
+#### Frontend (Public Site)
+- **Framework:** ASP.NET Core 8.0 MVC
+- **UI:** Razor Views, Bootstrap
+- **Database:** SQL Server (Entity Framework Core)
+- **Authentication:** Cookie-based
+- **i18n:** Resource files (.resx)
+
+#### Backend (Admin Panel)
+- **Framework:** React 19 + TypeScript
+- **UI Library:** Ant Design 5.23
+- **State Management:** Refine Framework
+- **Build Tool:** Vite 6
+- **HTTP Client:** Axios
+- **i18n:** i18next
+- **Icons:** Ant Design Icons, Flag Icons
+- **Charts:** Ant Design Plots
+
+#### Backend API
+- **.NET:** ASP.NET Core 8.0 Web API
+- **ORM:** Entity Framework Core
+- **Database:** SQL Server
+- **Authentication:** JWT Bearer
+- **Email:** MailKit
+- **PDF:** QuestPDF
+- **Image Processing:** ImageSharp
+- **Caching:** IMemoryCache
+- **Compression:** Brotli/Gzip
+
+### 📸 Ekran Görüntüleri
+
+*(Screenshots buraya eklenebilir)*
+
+### 🚀 Kurulum
+
+#### Gereksinimler
+- .NET 8.0 SDK
+- Node.js 18+ (Admin panel için)
+- SQL Server 2019+
+
+#### 1. Repository'yi Klonlayın
+```bash
+git clone https://github.com/yourusername/PortfolioCV.git
+cd PortfolioCV
+```
+
+#### 2. Database Ayarları
+`appsettings.json` dosyasında connection string'i güncelleyin:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YOUR_SERVER;Database=vmDb;..."
+  }
+}
+```
+
+#### 3. Frontend (Public Site) Çalıştırma
+```bash
+dotnet restore
+dotnet run
+```
+Tarayıcıda: `http://localhost:5000`
+
+#### 4. Admin Panel Kurulumu
+```bash
+cd admin-panel
+npm install
+npm run dev
+```
+Tarayıcıda: `http://localhost:5173`
+
+### 🔧 Yapılandırma
+
+#### Email Ayarları
+`appsettings.json`:
+```json
+{
+  "EmailSettings": {
+    "Host": "smtp.yourdomain.com",
+    "Port": 587,
+    "Username": "your-email@domain.com",
+    "Password": "your-password"
+  }
+}
+```
+
+#### CORS Ayarları
+`Program.cs` içinde production domain'inizi ekleyin:
+```csharp
+policy.WithOrigins(
+    "http://localhost:5173",
+    "https://dashboard.yourdomain.com"
+)
+```
+
+### 📦 Production Build
+
+#### Frontend
+```bash
+dotnet publish -c Release -o ./publish
+```
+
+#### Admin Panel
+```bash
+cd admin-panel
+npm run build
+# dist/ klasörü oluşur
+```
+
+### 🌐 Deployment
+
+#### Önerilen Yapı
+- **Public Site:** `yourdomain.com` (Frontend + API)
+- **Admin Panel:** `dashboard.yourdomain.com` (React SPA)
+
+#### IIS Deployment
+1. `publish/` klasörünü IIS'e kopyalayın
+2. Application Pool: No Managed Code
+3. `ASPNETCORE_ENVIRONMENT=Production` set edin
+
+### 🔐 Güvenlik
+
+- ✅ JWT Authentication
+- ✅ CORS Protection
+- ✅ SQL Injection Prevention (Parameterized Queries)
+- ✅ XSS Protection
+- ✅ HTTPS Enforcement
+- ✅ Rate Limiting
+- ✅ Input Validation
+
+### 📝 Lisans
+
+MIT License - Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+
+### 👨‍💻 Geliştirici
+
+**Veysel Mut**
+- Website: [veyselmut.com.tr](https://veyselmut.com.tr)
+- Admin Panel: [dashboard.veyselmut.com.tr](https://dashboard.veyselmut.com.tr)
 
 ---
 
-## 📦 Deployment (IIS)
+<a name="en"></a>
+## 🇬🇧 English
 
-This project is optimized for IIS deployment.
+### 📋 About The Project
 
-### Backend Publish
-1.  Run `dotnet publish -c Release`.
-2.  Upload files to your server (e.g., `www.yourdomain.com` or `api.yourdomain.com`).
-3.  **Important:** Ensure `web.config` is present to handle IIS modules.
+PortfolioCV is a modern and professional portfolio & CV management system. You can manage your personal information, education history, work experiences, projects, and skills on a single platform and share them with your visitors.
 
-### Admin Panel Publish
-1.  Run `npm run build` inside `admin-panel`.
-2.  Upload `dist` folder contents to your admin subdomain or subfolder (e.g., `dashboard.yourdomain.com`).
+### ✨ Features
 
-### ⚠️ Troubleshooting 405/403 Errors on IIS
-If you encounter `403 Forbidden` or `405 Method Not Allowed` on **DELETE/PUT** requests:
-*   This project includes a built-in **Method Override** feature.
-*   The Admin Panel automatically converts `DELETE` and `PUT` requests to `POST` requests with a special header (`X-HTTP-Method-Override`).
-*   Ensure the Backend is published correctly, as `Program.cs` contains the middleware to handle this override.
+#### 🎨 Frontend (Public Site)
+- 🌐 Multi-language support (Turkish/English)
+- 🌓 Dark/Light mode
+- 📱 Fully responsive design
+- ⚡ High performance
+- 🎯 SEO optimized
+- 📊 Visitor tracking
+- 📧 Contact form
+- 📄 PDF CV download
+
+#### 🔧 Admin Panel
+- 🔐 JWT-based secure authentication
+- 📊 Advanced dashboard & analytics
+- 🌍 IP-based country detection (flag display)
+- 📈 Visitor statistics
+- 🎨 Modern UI/UX (Ant Design)
+- 🌓 Dark/Light mode
+- 📱 Responsive design
+- 🔄 Real-time data management
+
+#### 📦 Manageable Content
+- 👤 Personal Information
+- 🎓 Education History
+- 💼 Work Experiences
+- 🛠️ Skills
+- 🚀 Projects
+- 🏆 Certificates
+- 🌐 Languages
+- 👥 References
+- 🔗 Social Media
+- ⚙️ Services
+- 💬 Messages
+
+### 🛠️ Technology Stack
+
+#### Frontend (Public Site)
+- **Framework:** ASP.NET Core 8.0 MVC
+- **UI:** Razor Views, Bootstrap
+- **Database:** SQL Server (Entity Framework Core)
+- **Authentication:** Cookie-based
+- **i18n:** Resource files (.resx)
+
+#### Backend (Admin Panel)
+- **Framework:** React 19 + TypeScript
+- **UI Library:** Ant Design 5.23
+- **State Management:** Refine Framework
+- **Build Tool:** Vite 6
+- **HTTP Client:** Axios
+- **i18n:** i18next
+- **Icons:** Ant Design Icons, Flag Icons
+- **Charts:** Ant Design Plots
+
+#### Backend API
+- **.NET:** ASP.NET Core 8.0 Web API
+- **ORM:** Entity Framework Core
+- **Database:** SQL Server
+- **Authentication:** JWT Bearer
+- **Email:** MailKit
+- **PDF:** QuestPDF
+- **Image Processing:** ImageSharp
+- **Caching:** IMemoryCache
+- **Compression:** Brotli/Gzip
+
+### 📸 Screenshots
+
+*(Screenshots can be added here)*
+
+### 🚀 Installation
+
+#### Requirements
+- .NET 8.0 SDK
+- Node.js 18+ (for Admin panel)
+- SQL Server 2019+
+
+#### 1. Clone Repository
+```bash
+git clone https://github.com/yourusername/PortfolioCV.git
+cd PortfolioCV
+```
+
+#### 2. Database Configuration
+Update connection string in `appsettings.json`:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YOUR_SERVER;Database=vmDb;..."
+  }
+}
+```
+
+#### 3. Run Frontend (Public Site)
+```bash
+dotnet restore
+dotnet run
+```
+Browser: `http://localhost:5000`
+
+#### 4. Admin Panel Setup
+```bash
+cd admin-panel
+npm install
+npm run dev
+```
+Browser: `http://localhost:5173`
+
+### 🔧 Configuration
+
+#### Email Settings
+In `appsettings.json`:
+```json
+{
+  "EmailSettings": {
+    "Host": "smtp.yourdomain.com",
+    "Port": 587,
+    "Username": "your-email@domain.com",
+    "Password": "your-password"
+  }
+}
+```
+
+#### CORS Settings
+Add your production domain in `Program.cs`:
+```csharp
+policy.WithOrigins(
+    "http://localhost:5173",
+    "https://dashboard.yourdomain.com"
+)
+```
+
+### 📦 Production Build
+
+#### Frontend
+```bash
+dotnet publish -c Release -o ./publish
+```
+
+#### Admin Panel
+```bash
+cd admin-panel
+npm run build
+# dist/ folder will be created
+```
+
+### 🌐 Deployment
+
+#### Recommended Structure
+- **Public Site:** `yourdomain.com` (Frontend + API)
+- **Admin Panel:** `dashboard.yourdomain.com` (React SPA)
+
+#### IIS Deployment
+1. Copy `publish/` folder to IIS
+2. Application Pool: No Managed Code
+3. Set `ASPNETCORE_ENVIRONMENT=Production`
+
+### 🔐 Security
+
+- ✅ JWT Authentication
+- ✅ CORS Protection
+- ✅ SQL Injection Prevention (Parameterized Queries)
+- ✅ XSS Protection
+- ✅ HTTPS Enforcement
+- ✅ Rate Limiting
+- ✅ Input Validation
+
+### 📝 License
+
+MIT License - See [LICENSE](LICENSE) file for details.
+
+### 👨‍💻 Developer
+
+**Veysel Mut**
+- Website: [veyselmut.com.tr](https://veyselmut.com.tr)
+- Admin Panel: [dashboard.veyselmut.com.tr](https://dashboard.veyselmut.com.tr)
 
 ---
 
-## 🛠 Tech Stack
-*   **Core:** .NET 8, C#
-*   **Frontend:** HTML5, CSS3, JavaScript
-*   **Admin:** React, TypeScript, Vite, Refine
-*   **Data:** EF Core, SQL Server
+## 🙏 Acknowledgments
 
-## 📄 License
-MIT License.
+- [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet)
+- [React](https://react.dev/)
+- [Ant Design](https://ant.design/)
+- [Refine](https://refine.dev/)
+- [QuestPDF](https://www.questpdf.com/)
+- [Flag Icons](https://github.com/lipis/flag-icons)
+
+---
+
+**⭐ If you like this project, please give it a star!**

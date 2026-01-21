@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace PortfolioCV.Controllers.Api;
 
@@ -21,7 +24,7 @@ public class UploadController : ControllerBase
     }
 
     [HttpPost("avatar")]
-    public async Task<IActionResult> UploadAvatar(IFormFile file)
+    public async Task<IActionResult> UploadAvatar(IFormFile file, [FromForm] string? deleteOldPath = null)
     {
         if (file == null || file.Length == 0)
             return BadRequest("Dosya seçilmedi.");
@@ -32,11 +35,10 @@ public class UploadController : ControllerBase
         if (!allowedExtensions.Contains(extension))
             return BadRequest("Sadece resim dosyaları (.jpg, .png, .gif, .webp) yüklenebilir.");
 
-        // WebRootPath null olabilir, kontrol et
+        // wwwroot ve uploads klasörlerini ayarla
         string webRootPath = _environment.WebRootPath;
         if (string.IsNullOrEmpty(webRootPath))
         {
-            // Eğer WebRootPath tanımlı değilse (örneğin development ortamında wwwroot klasörü oluşturulmamışsa)
             webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
         }
 
@@ -44,14 +46,52 @@ public class UploadController : ControllerBase
         if (!Directory.Exists(uploadsFolder))
             Directory.CreateDirectory(uploadsFolder);
 
-        var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+        // 1. ESKİ DOSYAYI SİLME İŞLEMİ (Temizlik)
+        if (!string.IsNullOrEmpty(deleteOldPath))
+        {
+            try
+            {
+                // Güvenlik Kontrolü: Sadece /uploads/ altındaki dosyalar silinebilir.
+                // Path Traversal saldırısını önlemek için dosya adını alıp tekrar path oluşturuyoruz.
+                var fileName = Path.GetFileName(deleteOldPath); 
+                var hasExtension = Path.HasExtension(fileName);
+                
+                if (hasExtension && deleteOldPath.Contains("/uploads/"))
+                {
+                    var oldFilePath = Path.Combine(uploadsFolder, fileName);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+            }
+            catch
+            {
+                // Silme hatası yüklemeyi durdurmamalı, loglanabilir.
+            }
+        }
+
+        // 2. YENİ DOSYAYI OPTİMİZE EDİP KAYDETME
+        // Uzantıyı .jpg yapıyoruz (optimizasyon sonrası standart çıktı)
+        var uniqueFileName = $"{Guid.NewGuid()}.jpg";
         var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
         try
         {
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            // ImageSharp ile işlem
+            using (var image = await Image.LoadAsync(file.OpenReadStream()))
             {
-                await file.CopyToAsync(stream);
+                // Resize: En uzun kenarı 800px olacak şekilde orantılı küçült
+                // Eğer resim zaten küçükse büyütmez (ResizeMode.Max)
+                image.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new Size(800, 800),
+                    Mode = ResizeMode.Max
+                }));
+
+                // Kaliteyi %75'e düşürerek JPEG olarak kaydet
+                // Bu, 5MB'lık bir resmi görsel kalite kaybı olmadan 100-200KB'a düşürür.
+                await image.SaveAsJpegAsync(filePath, new JpegEncoder { Quality = 75 });
             }
 
             var url = $"/uploads/{uniqueFileName}";
@@ -59,7 +99,7 @@ public class UploadController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Yükleme hatası: {ex.Message}");
+            return StatusCode(500, $"Optimizasyon ve yükleme hatası: {ex.Message}");
         }
     }
 }
