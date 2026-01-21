@@ -1,4 +1,4 @@
-# 🌟 PortfolioCV - Modern Portfolio & CV Management System
+﻿# 🌟 PortfolioCV - Modern Portfolio & CV Management System
 
 [🇹🇷 Türkçe](#tr) | [🇬🇧 English](#en)
 
@@ -13,7 +13,7 @@ PortfolioCV, modern ve profesyonel bir portföy & CV yönetim sistemidir. Kişis
 
 ### ✨ Özellikler
 
-#### 🎨 Frontend (Public Site)
+#### 🎨 Frontend (Public Site - PortfolioCV/)
 - 🌐 Çok dilli destek (Türkçe/İngilizce)
 - 🌓 Dark/Light mode
 - 📱 Tam responsive tasarım
@@ -23,7 +23,7 @@ PortfolioCV, modern ve profesyonel bir portföy & CV yönetim sistemidir. Kişis
 - 📧 İletişim formu
 - 📄 PDF CV indirme
 
-#### 🔧 Admin Panel
+#### 🔧 Backend (Admin Panel - admin-panel/)
 - 🔐 JWT tabanlı güvenli authentication
 - 📊 Gelişmiş dashboard & analytics
 - 🌍 IP bazlı ülke tespiti (bayrak gösterimi)
@@ -48,14 +48,14 @@ PortfolioCV, modern ve profesyonel bir portföy & CV yönetim sistemidir. Kişis
 
 ### 🛠️ Teknoloji Stack'i
 
-#### Frontend (Public Site)
+#### Frontend (Public Site - PortfolioCV/)
 - **Framework:** ASP.NET Core 8.0 MVC
 - **UI:** Razor Views, Bootstrap
 - **Database:** SQL Server (Entity Framework Core)
 - **Authentication:** Cookie-based
 - **i18n:** Resource files (.resx)
 
-#### Backend (Admin Panel)
+#### Backend (Admin Panel - admin-panel/)
 - **Framework:** React 19 + TypeScript
 - **UI Library:** Ant Design 5.23
 - **State Management:** Refine Framework
@@ -103,7 +103,7 @@ cd PortfolioCV
 }
 ```
 
-#### 3. Frontend (Public Site) Çalıştırma
+#### 3. Frontend (Public Site - PortfolioCV/) Çalıştırma
 ```bash
 dotnet restore
 dotnet run
@@ -198,7 +198,7 @@ PortfolioCV is a modern and professional portfolio & CV management system. You c
 
 ### ✨ Features
 
-#### 🎨 Frontend (Public Site)
+#### 🎨 Frontend (Public Site - PortfolioCV/)
 - 🌐 Multi-language support (Turkish/English)
 - 🌓 Dark/Light mode
 - 📱 Fully responsive design
@@ -233,14 +233,14 @@ PortfolioCV is a modern and professional portfolio & CV management system. You c
 
 ### 🛠️ Technology Stack
 
-#### Frontend (Public Site)
+#### Frontend (Public Site - PortfolioCV/)
 - **Framework:** ASP.NET Core 8.0 MVC
 - **UI:** Razor Views, Bootstrap
 - **Database:** SQL Server (Entity Framework Core)
 - **Authentication:** Cookie-based
 - **i18n:** Resource files (.resx)
 
-#### Backend (Admin Panel)
+#### Backend (Admin Panel - admin-panel/)
 - **Framework:** React 19 + TypeScript
 - **UI Library:** Ant Design 5.23
 - **State Management:** Refine Framework
@@ -288,7 +288,7 @@ Update connection string in `appsettings.json`:
 }
 ```
 
-#### 3. Run Frontend (Public Site)
+#### 3. Run Frontend (Public Site - PortfolioCV/)
 ```bash
 dotnet restore
 dotnet run
